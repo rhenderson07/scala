@@ -1,0 +1,218 @@
+CourseraScala:
+
+Getting started:
+	info at: https://class.coursera.org/progfun-005/assignment/view?assignment_id=2
+
+	Got to Tools setup in coursera:
+
+	use eclipse IDE
+		install Scala IDE plugin for eclipse
+
+	use Scala Build Tool (sbt)
+		Found at http://www.scala-sbt.org/download.html
+		course requires version 0.13x
+			-current version is 0.13.8
+
+			Created	simple hello world app
+			Created simple Worksheet
+
+		To run Scala interpreter from the command line:
+			-Open cmd prompt
+			-enter "sbt" to start scala build tool
+			-enter "console" to start scala REPL
+			-type scala code to execute on demand
+
+			*To Exit, Ctrl + d
+
+	To Run code:
+		Option 1) through comman line, using scala REPL
+			-navigate to project folder,
+			-start sbt, and REPL
+			-import definitions
+				ex) import examplePackage.exampleObject._
+
+		Option 2) using Main Object
+			* in order to make an object executable, it must extend the type App
+
+	To Test:
+		use SolidTest
+
+	To Submit code to Coursera:
+		open sbt
+		enter "submit"
+		provide submission password, given on coursera for each assignment
+
+	Assignment:
+		obtain project Files:
+
+
+Worksheets:
+	when saved, display results as comments to right of code
+
+
+
+Lecture 1:
+	Functional Paradigm:
+
+	Main programming paradigms:
+		imperative:
+			-modifying mutable variables
+			-using assignments
+			-control structus such as if-then-else, loops, breaks
+
+			instruction sequece designed for a Von Neumann Computer
+				-Processor and memory, linked by a bus (32 or 64 bit word)
+
+				mutatable variables  -> memory cells
+				variable deferences  -> load instructions
+				variable assignments -> store instructions
+				control strucure     -> jumps
+
+			Problems: Scaling up. How can we avoid conceptualizing programs word by word?
+
+			To solve, we need other techniques for defining high level abstraction such as collections, polynomials, strings, documents, etc
+
+			Need theories to define these things
+			-Theories do not include mutation, only definitions
+			-mutation can destroy useful laws in the theories
+			-provide powerfuls ways to abstract and compose functions
+
+		functional programming:
+			-restricted definition: prigramming without mutable variables, assignments or imperative control structures
+			-loose definition: enable the construction of elegant programs that focus on functions
+
+			function are first-class citizens
+				-can be defined anywhere, including inside other functions
+				-can be passed as parameters to functions and returned as results
+				-as for other values, there exists a set of operatos to compose functions
+
+			Languages:
+				Restricted:
+					Pure Lisp, XSLT, XPath, XQuery
+					Haskell (withou I/O Monad or UnsafePerformIO)
+
+				Loose: 
+					Lisp, Scheme, Racket, Clojure
+					SML, Ocaml, F#
+					Haskell (full language)
+					Scala
+					Smalltalk, Ruby
+					JavaScript
+
+			Good for exploiting parallelism for multicore machines
+
+
+		logic programming:
+
+		Object oriented is orthogonal to these. and can be integrated into any of them
+
+
+Bonus Lecture: Working Hard to Keep it simple w/ Martin Odersky @ OSCON Java 2011:
+	processor are not getting faster,
+	need to add more cores to get more computing power
+
+	Parallel vs Concurrent Programming:
+
+		Paralellel: execute programs faster on parallel hardware. Could be sequential but, there is speed benefit with parapellel
+		Concurrent: Manage concurrent execution threads explicitly. Concurrent by nature.
+
+	Nondeterminimism come from parallel processing with mutable state
+		parallel is not going away, so must solve this issue by addressing mutable state
+
+	Imperative programmint requires thinking about time. 
+		create race conditions
+		requires locks, time management 
+	Functional programming requires thinking about space, not time
+
+
+	Scala is a unifier
+		combines functional and OO thinking
+			Agile with lightweight syntax
+			Safe and performant with strong static typing
+			parallel or sequential
+
+	Adopters:
+		Twitter
+		IBM
+		LinkIn
+		Amazon
+		TomTom
+		Bank of America
+		UBS
+		Nasa
+		AutoDesk
+
+		Web platforms
+
+		Trading platforms
+
+		Financial platforms
+
+	Advantage:
+		very scalable
+		versitle compact language
+
+	Different Tools for Different Purposes:
+		Parallelism;
+			Collection:
+				Parallel Collections: parralel array is very easy to manage
+				Distributed Collections
+
+			Parallel DSLs: Domain Specific Languages
+
+		Concurrency: These are all AKKA
+			Actors for concurrent Programming:
+				-simple message-oriented programming model for multi-threading
+				-Serializes access to shared resources using queue nad function passing
+				-easier for programmers to create reliable concurrent processing
+				-Many sources of contention, races, locking and dead-locks are removed
+
+				example:
+					class Person(val name:String, val age: Int)
+
+					actor{
+						receive {
+							case people: Set[Person] =>
+								val (minors, adults) = people partition (_.age < 18)
+								Facebook ! minors	// sends minors to facebook
+								LinkedIn ! adults	// sends adults to linkedIn
+						}
+					}
+
+			Software Tranactional memory
+			Futures
+
+
+Lecture 1.2 Elelments of Programming
+	Elements of programming
+		primative expressions
+		ways to combine expresions
+		ways to extract expressions
+
+	Read-Eval-Print Loop (REPL)
+		Functional programming is like a calulator
+		and interactive shell lets one write expressions and respond with their value
+		Start Scala REPL with command "scala"
+
+	Evaluation
+		left to right eval of operands
+		Replace the function application by the functions right hand side and at the same time
+		Replcae the formal parameters of the function by the actual arguments
+
+	Substitution model
+		all evaluation does is reduce and expression to a value
+		It can be applied to all expressions, as long as they have no side effects
+		formalized in lambda calculus
+		foundation of programming
+
+	Call-by-name and call-by-value
+		Call by name:
+			delay evaluation until argument is used
+			may evaluate same arguments multiple times
+			will not evaluate unused arguments at all
+
+		Call by value:
+			evaluates each argument as early as possible
+			evaluates each argument once
+
+

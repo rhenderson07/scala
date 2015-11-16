@@ -1,0 +1,62 @@
+Lunch and learn notes:
+
+Outline of talk:
+	What is Scala
+
+	Types:
+
+
+
+Quotes:	
+	one of Scalas strengths is that it provides a gratual migration path from a more concise java-like language to full functional programming.
+	
+
+
+Misc:
+	closures in scala are compact
+
+
+Questions:
+	What id differenct between def and val?
+
+
+
+	What is difference between Scala Object and Scala Type?
+
+		A class is a definiation, a description, It defines a type in terms of methods and composition of other types.
+
+		An object is a single -- and instance oa a class which is guaranteed to be unique. For every object in the code, and anonymous class is created, whichinherits from whatever classes you declared object to implement. This class cannot be seen from Scala scource code -- though you can get at it through reflection.
+
+		object keyword is like creating a singleton object of a class tha is defined implictly
+
+			example: This code with define class A and create all of the methods of object A (the function f) as static method on class A (for inerfacing with Java). 
+
+				Objects A extends B with C {
+					def f(x:any): Any = ???
+				}
+
+
+		Companion Objects: An object is said to be a companion-object of a class if  they share the same name. When the happens, each has access to methods of private visibility in the other. These methods are not automaticall imported, though. You either have to import them explicitly, or prefix them with the class/object name.
+
+			example:
+				class X {
+				  // class X can see private members of object X
+				  // Prefix to call
+				  def m(x: Int) = X.f(x)
+
+				  // Import and use
+				  import X._
+				  def n(x: Int) = f(x)
+
+				  private def o = 2
+				}
+
+				object X {
+				  private def f(x: Int) = x * x
+
+				  // object X can see private members of class X
+				  def g(x: X) = {
+				    import x._
+				    x.o * o // fully specified and imported
+				   }
+				}

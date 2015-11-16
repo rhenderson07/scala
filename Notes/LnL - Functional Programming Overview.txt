@@ -1,0 +1,121 @@
+What is Functional Programming w/ Heath Murphy
+
+Intro:
+	Heath is not a master
+		Still a Padawan Learner
+
+		Jim Everett is a Master
+
+Events:
+	Functional javascript with Adam Perks
+	F# with Vince Paulson
+
+	Javascript is a Functional language:
+		Shocker
+
+Functional is:
+	typedef:
+		style of building the structre and elements of computer programs thatt treats computation as the evaluation of mathematical functions and avoids changing state and mutable data. It is a declarative programming paradigm, which means programming is done with expressions
+
+	Layman = No classes, functions dont change stae and always return something, the framework should do all the heavy lifting
+
+History:
+	roots in lambda calculus
+
+	Lisp: developed in 1950s
+
+	Haskell language: 1990s: Open standard named after Haskell Curry. "Father of functional"
+
+
+Functional vs OO
+	functional 
+		favors high order functions
+		functions are 1st class
+		avoids side effects
+		"Ceding to the platform" is common
+
+	object oriented
+		classes
+		state changes are normal
+		typically more efficient: recursion is popular in function, which is expensive
+
+Functional in other languages
+	LINQ is functional
+	The rocket ship (aka lambda) rocks
+
+
+Why do we need this?:
+	targeting multicore processors is easier when the platform handles the plumbing, Parallel.ForEach solve many problems (not all)
+	Code that is immutable requires less testing!
+	Less code which is more readable
+
+
+Cede Control
+	Smart people write super effience code and add it to libraries. Take advantage of those libraries
+Concision
+	write less code. In OOP wie break up classes into even more classes and create tons of moving parts. Function helps you avoin writing code in the first place
+Express Yourself
+	Functional code treats programs as expressions and avoids mutable state
+
+
+First Class functions
+	functions can be passed around like any other objects (passed as parameters, returned by functions)
+	assign functions to variables
+	functions dont need names (think lambda expressions)
+	nest functions - closures
+	compare functions
+
+Higher order functions
+	functional languages contain concepts at a higherlevel to minimize the code you must write
+
+Pure Code:
+	does not ever change state (dont wirte to console, log, etc.)
+	pure function with references to impure function becomes tainted
+
+Why do this?
+	Parallelization is free!
+
+Stop iterating
+	use filter, map, reduce
+	filter: use a predicate function to select elements out of a list
+	Map: use a transformation function to shape the elements of the list. We ofter times call this a projection (like a select staement)
+	Reduce (aka fold): use an aggregate function on a list to calculate a single return value
+
+LINQ:
+	var dragons = new List<Dragon>()
+
+	//filter
+	var redDragons = dragons.Where(d => d.Color == "Red")
+
+Closure:
+	in Programmin languages, closures (also lexical closures of functional closures) are a technique for implementing lexically scoped name binding in languages with first class functions
+
+	closure is a referene to a varaiable in the outer scope of the function
+
+Currying:
+	has roots in lambda calculus
+	basic idea is to take a function that has multiple arguments and convert it into many functions, each taking a single argument.
+	reuse technique
+
+
+
+Partial Functions
+
+Recursion:
+	Collect;ions are simply a head element with one or more tail elements
+	With this mindset, we can create recursive loops that iterate over lists
+	remember that pure functions cannot have any side effectsw. Recursion allows us to avoid state change by passing state in the stack frame as input arguments
+
+	many languaes have tail recursion optimization
+
+	Aggregate function is used to recurse over list
+
+Memoization:
+	Since result of a function is always the same, can cache results to use later
+	Can provide huge performance benfit
+
+Laziness
+	Delay all evaluation until it is actually needed
+	Do not act on anything until needed. Filter does not have effect until a terminator like reduce is called.
+
+
