@@ -9,7 +9,7 @@
 .lib/
 dist/*
 target/
-#/lib_managed/jars/ #allow all managed libraries. becausse there is no reason to exclude them without Maven.
+#/lib_managed/jars/ #allow all managed libraries. because there is no reason to exclude them without Maven.
 src_managed/
 project/boot/
 project/plugins/project/
