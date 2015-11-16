@@ -51,6 +51,5 @@ object Main {
       0
     else
       return countChange(money - coins.head, coins) + countChange(money, coins.tail)
-
-  } // must implement
+  }
 }
