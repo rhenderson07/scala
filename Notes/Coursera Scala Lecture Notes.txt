@@ -215,4 +215,41 @@ Lecture 1.2 Elelments of Programming
 			evaluates each argument as early as possible
 			evaluates each argument once
 
+Lecture 1.3 Evaluation Strategies and Terination
+	Call by name and call by value reduce an expression to the same value if the evaluation terminates
+
+	What if the evaluation does not terminate?
+		CBV terminates ->  CBN terminates
+		the inverse is not true
+
+		Scala usually uses call by value: exponentially more efficient
+
+		Can force call-by-name using rocket symbol (=>)
+			example) def constOne(x: Int, y; => Int) = 1
+
+Lecture 1.4 Conditional Expressions:
+	Scala has conditional expression if-else.
+		This looks like an if-else in Java, but is used for expressions, not statements
+
+		Example) def abs(x: Int) = if (x >= 0) x else -x
+
+		here, "x >= 0" is a predicate, of type boolean
+
+Lecture 1.6 Blocks and Lexical Scope
+	Block are like functions and can be passed around as such
+
+	Scope is similar to normal Java scope rules.
+	* values can safely be reused, because they cannot be reassigned. 
+
+Lecture 1.7 Tail Recursion
+	If a function calls itself as its last action, the function's stack frame can be reused. This means that one stack frame is sufficient for both functions.
+
+	Tail recursive functions are an iterative process. executes as efficiently as a loop
+	Example is the factorial function
+
+	Scala can perform tail recursion optimization at compile time. the @tailrec tag can make this explicit.
+
+	
+
+
 
