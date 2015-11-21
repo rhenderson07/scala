@@ -1,13 +1,13 @@
 import scala.annotation.tailrec
 
-class Problem3 extends Problem with App {
+object Problem3 extends Problem with App {
   def number = 3
   def description = "What is the largest prime factor of the number 600851475143."
 
   def run = largestPrimeFactor2(target)
   //def run = largestPrimeFactor(target)
 
-  val target = 600851475143L
+  lazy val target = 600851475143L
   def root(value: Long): Long = Math.sqrt(value).round
 
   // my first attempt with streams. Only works with integer values
@@ -36,7 +36,7 @@ class Problem3 extends Problem with App {
   def divisorInList(num: Long, factors: List[Long]): Boolean = factors.forall(num % _ != 0)
   def largestPrimeFactor(value: Long) = primesUnder(root(value)).filter(value % _ == 0).lastOption.getOrElse(-1L)
 
-  val p = new Problem3
+
   //p.primes.takeWhile(_ <= 1000).foreach(println)
-  println(p.largestPrimeFactor3(100000L))
+  println(largestPrimeFactor3(100000L))
 }

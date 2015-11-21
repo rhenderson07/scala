@@ -1,6 +1,6 @@
 
 
-class Problem1 extends Problem{
+object Problem1 extends Problem{
   def number = 1
   def description = "Find the sum of all the multiples of 3 or 5 below 1000."
   
