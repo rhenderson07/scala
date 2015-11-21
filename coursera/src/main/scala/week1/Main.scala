@@ -1,4 +1,4 @@
-package recfun
+package week1
 import common._
 
 object Main {

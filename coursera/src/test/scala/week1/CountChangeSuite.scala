@@ -1,14 +1,15 @@
-package recfun
+package week1
 
 import org.scalatest.FunSuite
-
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
 class CountChangeSuite extends FunSuite {
-  import Main.countChange
-  test("countChange: example given in instructions") {
+
+import week1.Main.countChange;
+import Main.countChange
+  test("countChange: week0 given in instructions") {
     assert(countChange(4,List(1,2)) === 3)
   }
 

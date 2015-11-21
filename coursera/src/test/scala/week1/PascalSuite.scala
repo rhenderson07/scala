@@ -1,13 +1,14 @@
-package recfun
+package week1
 
 import org.scalatest.FunSuite
-
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
 class PascalSuite extends FunSuite {
-  import Main.pascal
+
+import week1.Main.pascal;
+import Main.pascal
   test("pascal: col=0,row=2") {
     assert(pascal(0,2) === 1)
   }

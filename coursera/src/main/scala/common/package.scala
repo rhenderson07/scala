@@ -14,7 +14,7 @@ package object common {
 
   
   /**
-   * Get a child of a file. For example,
+   * Get a child of a file. For week0,
    * 
    *   subFile(homeDir, "b", "c")
    * 

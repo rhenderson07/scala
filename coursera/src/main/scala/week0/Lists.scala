@@ -1,14 +1,14 @@
-package example
+package week0
 
 import common._
 
-object Lists {
+object Lists extends App{
   /**
    * This method computes the sum of all elements in the list xs. There are
    * multiple techniques that can be used for implementing this method, and
    * you will learn during the class.
    *
-   * For this example assignment you can use the following methods in class
+   * For this week0 assignment you can use the following methods in class
    * `List`:
    *
    *  - `xs.isEmpty: Boolean` returns `true` if the list `xs` is empty
@@ -43,4 +43,11 @@ object Lists {
   def max(xs: List[Int]): Int = {
     return xs.reduce((x,y) => if (x > y) x else y)
   }
+  
+  
+  // run
+  def xs = List(1, 2, 3, 6, 7, 12, 34, 1004)
+
+  printf("Sum = %d\n", Lists.sum(xs))
+  printf("Max = %d\n", Lists.max(xs))
 }
