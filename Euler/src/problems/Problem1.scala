@@ -1,7 +1,4 @@
-
-
 package problems
-import problems.Problem
 
 object Problem1 extends Problem {
   def number = 1

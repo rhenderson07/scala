@@ -1,10 +1,6 @@
-
-
 package problems
 
-import scala.collection.immutable.Stream.consWrapper
 
-import problems.Problem
 
 object Problem2 extends Problem with App {
   def number = 2

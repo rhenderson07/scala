@@ -1,7 +1,6 @@
 package problems
 
 import scala.annotation.tailrec
-import problems.Problem
 
 object Problem5 extends Problem with App {
   def number = 5
