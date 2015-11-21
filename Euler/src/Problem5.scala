@@ -21,7 +21,6 @@ object Problem5 extends Problem with App {
     rec(1, maxDivisor)
   }
   lazy val smallestDivisible2 = findVeryDivisible(20)
-
   //println(findVeryDivisible(20))
 
   // first attempt. runs out of memory
@@ -29,6 +28,7 @@ object Problem5 extends Problem with App {
     def divisible = (x: Int) => (1 to 20).toList.forall(x % _ == 0)
     lazy val longStream = Stream.iterate(1L)({ (x: Long) => x + 1 }: Long => Long)
     lazy val smallestDivisible = longStream.find((x: Long) => (1 to 20).toList.forall((i: Int) => x % i == 0)).get
+    print("")
   }
 
   // second attempt. multiply all values together to get an upper bound, then count down. did not need this approach
@@ -40,6 +40,7 @@ object Problem5 extends Problem with App {
         nums.head * product(nums.tail)
     }
     lazy val upperBound = product((1 to 20).toList)
+    print("")
   }
 
   // from euler. faster than mine, by alot
