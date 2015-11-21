@@ -1,6 +1,6 @@
 
 
-class Problem4 extends Problem {
+class Problem4 extends Problem with App{
   def number = 4
   def description = "Find the largest palindrome made from the product of two 3-digit numbers."
 
@@ -23,11 +23,6 @@ class Problem4 extends Problem {
 
   // from euler, with for-expression
   val largestPalindrome2 = (for (x <- 100 to 999; y <- 100 to 999; z = x * y; if z.toString.equals(z.toString.reverse)) yield z).max
-}
-
-object Prob4Main extends App {
-  val p = new Problem4
-  //p.products((100 to 999).toList).foreach(println)
-
-  println(p.largestPalindrome2)
+  
+  println(largestPalindrome2)
 }
