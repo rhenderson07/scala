@@ -1,5 +1,9 @@
 
 
+package problems
+
+import problems.Problem7
+
 object ProblemRunner extends App {
   val p = Problem7
   

@@ -1,4 +1,7 @@
 
+package problems
+
+import problems.Problem
 
 object Problem4 extends Problem with App {
   def number = 4

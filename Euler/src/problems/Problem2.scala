@@ -1,5 +1,11 @@
 
 
+package problems
+
+import scala.collection.immutable.Stream.consWrapper
+
+import problems.Problem
+
 object Problem2 extends Problem with App {
   def number = 2
   def description = "By considering the terms in the Fibonacci sequence whose values do not exceed four million, find the sum of the even-valued terms."

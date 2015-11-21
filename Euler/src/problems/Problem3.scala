@@ -1,4 +1,11 @@
+package problems
+
 import scala.annotation.tailrec
+import scala.BigInt
+import scala.collection.immutable.Stream.consWrapper
+import scala.math.BigInt.int2bigInt
+import scala.math.BigInt.long2bigInt
+import problems.Problem
 
 object Problem3 extends Problem with App {
   def number = 3
