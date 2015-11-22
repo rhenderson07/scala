@@ -38,8 +38,4 @@ object Problem008 extends Problem with App {
   }
 
   def prods(str: String, len: Int) = substrings(str, len).map(prod(_))
-
-  lazy val A = prods(giantNumber, 13).max
-
-  println(A)
 }
