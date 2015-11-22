@@ -1,7 +1,7 @@
 
 package problems
 
-object Problem4 extends Problem with App {
+object Problem004 extends Problem with App {
   def number = 4
   def description = "Find the largest palindrome made from the product of two 3-digit numbers."
 

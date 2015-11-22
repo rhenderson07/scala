@@ -2,7 +2,7 @@ package problems
 
 
 
-object Problem2 extends Problem with App {
+object Problem002 extends Problem with App {
   def number = 2
   def description = "By considering the terms in the Fibonacci sequence whose values do not exceed four million, find the sum of the even-valued terms."
 

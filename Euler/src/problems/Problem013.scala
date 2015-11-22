@@ -1,6 +1,6 @@
 package problems
 
-object Problem13 extends Problem with App {
+object Problem013 extends Problem with App {
   def number = 13
   def description = "Work out the first ten digits of the sum of the following one-hundred 50-digit numbers."
 
