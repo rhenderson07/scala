@@ -1,7 +1,7 @@
 package problems
 import common.Primes
 
-object Problem10 extends Problem with App {
+object Problem010 extends Problem with App {
   def number = 10
   def description = "Find the sum of all the primes below two million."
 

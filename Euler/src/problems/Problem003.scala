@@ -6,7 +6,7 @@ import scala.collection.immutable.Stream.consWrapper
 import scala.math.BigInt.int2bigInt
 import scala.math.BigInt.long2bigInt
 
-object Problem3 extends Problem with App {
+object Problem003 extends Problem with App {
   def number = 3
   def description = "What is the largest prime factor of the number 600851475143."
 

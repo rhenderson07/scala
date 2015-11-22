@@ -1,7 +1,7 @@
 package problems
 import common.Primes
 
-object Problem11 extends Problem with App {
+object Problem011 extends Problem with App {
   def number = 11
   def description = "What is the greatest product of four adjacent numbers in the same direction (up, down, left, right, or diagonally) in the 20×20 grid?"
 
