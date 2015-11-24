@@ -1,5 +1,5 @@
 package problems
-import common.Primes
+import common.MyMath
 
 object Problem011 extends Problem with App {
   def number = 11
