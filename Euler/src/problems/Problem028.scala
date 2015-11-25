@@ -2,19 +2,14 @@
 package problems
 
 import common.MyMath
+import common.Point
 
 object Problem028 extends Problem with App {
   def number = 28
   def description = "What is the sum of the numbers on the diagonals in a 1001 by 1001 spiral formed by starting with the number 1 and moving to the right in a clockwise direction?"
-  def run = -1
+  def run = spriralDiagSum(sqareSize)
 
-  val squareEdgeLen = 1001
-
-  class Point(val x: Int, val y: Int) {
-    override def toString() = {
-      "[%d,%d]".format(x, y)
-    }
-  }
+  val sqareSize = 1001
 
   def findLocation(value: Int): Point = {
     val lastRoot = MyMath.intSqrt(value - 1)
@@ -43,15 +38,19 @@ object Problem028 extends Problem with App {
 
   def numSpiral(dimensionSize: Int) = {
     val dimSquare = dimensionSize * dimensionSize
-    (1 to dimSquare).map(x => (findLocation(x), x))
+    (1 to dimSquare).par.map(x => (findLocation(x), x))
   }
 
-  def spriralDiagSum(n: Int): Long = numSpiral(n).filter(x => isDiagonal(x._1)).map(_._2.longValue()).sum
+  def spriralDiagSum(n: Int): Long = {
+    numSpiral(n).filter(x => isDiagonal(x._1)).map(_._2.longValue()).sum
+  }
 
   def isDiagonal(p: Point): Boolean = {
     Math.abs(p.x) == Math.abs(p.y)
   }
 
-  println(numSpiral(5))
-  println(spriralDiagSum(5))
+  val t0 = System.nanoTime();
+  val sol = run
+  val t1 = System.nanoTime();
+  println(s" spiral diagonal sum = $sol.  Elapsed time ${(t1 - t0) * 1e-9} seconds")
 }

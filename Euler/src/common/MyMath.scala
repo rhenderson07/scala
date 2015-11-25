@@ -11,13 +11,15 @@ object MyMath {
   private def factorial2(n: Int): BigInt = (BigInt(1) /: (1 to n))(_ * _)
 
   /**
-   * Sum the individual digits of the provided number
+   * Return the individual digits of the provided number
    */
   def asListOfDigits(n: BigInt): List[Int] = n.toString.toList.map(_.asDigit)
 
-  // integer square root. does not have rounding errors
-  def intSqrt(n: Int): Int = Stream.from(0).takeWhile(x => x * x <= n).last
+  val squares: Stream[Long] = Stream.from(0).map(x=> x.longValue * x)
   
-  // return the next sq
-  def intSqrtRoundUp(n: Int): Int = Stream.from(0).find(x => x * x >= n).get
+  // return the last or current integer square root. Avoids the rounding errors of floating point math
+  def intSqrt(n: Int): Int = squares.indexWhere(_ > n) - 1
+  
+  // return the next or current sqrt.
+  def intSqrtRoundUp(n: Int): Int = squares.indexWhere(_ >= n)
 }
