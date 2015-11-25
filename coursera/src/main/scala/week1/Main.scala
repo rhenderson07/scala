@@ -50,6 +50,6 @@ object Main {
     else if (coins.isEmpty || money < 0)
       0
     else
-      return countChange(money - coins.head, coins) + countChange(money, coins.tail)
+      countChange(money - coins.head, coins) + countChange(money, coins.tail)
   }
 }

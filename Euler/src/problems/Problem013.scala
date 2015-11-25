@@ -4,7 +4,7 @@ object Problem013 extends Problem with App {
   def number = 13
   def description = "Work out the first ten digits of the sum of the following one-hundred 50-digit numbers."
 
-  def run = truncated(giantSum, 10)
+  lazy val run = truncated(giantSum, 10)
 
   lazy val giantSum = numberStrs.map(BigInt(_)).fold(BigInt(0))(_ + _)
   def truncated(full: BigInt, len: Int): Long = full.toString.substring(0, len).toLong
