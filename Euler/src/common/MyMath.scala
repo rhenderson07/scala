@@ -14,12 +14,17 @@ object MyMath {
    * Return the individual digits of the provided number
    */
   def asListOfDigits(n: BigInt): List[Int] = n.toString.toList.map(_.asDigit)
-
-  val squares: Stream[Long] = Stream.from(0).map(x=> x.longValue * x)
   
+  /**
+   * sum all the digits in a BigInt. This is a common operation in Project Euler
+   */
+  def sumOfDigits(n: BigInt): Long = asListOfDigits(n).map(_.longValue).sum
+
+  val squares: Stream[Long] = Stream.from(0).map(x => x.longValue * x)
+
   // return the last or current integer square root. Avoids the rounding errors of floating point math
   def intSqrt(n: Int): Int = squares.indexWhere(_ > n) - 1
-  
+
   // return the next or current sqrt.
   def intSqrtRoundUp(n: Int): Int = squares.indexWhere(_ >= n)
 }
