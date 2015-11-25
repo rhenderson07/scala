@@ -21,19 +21,22 @@ object Problem028 extends Problem with App {
     val lastRootEven = lastRoot % 2 == 0
     val halfWayToNextSquare = lastSquare + (nextOrCurrentSquare - lastSquare) / 2
     val underHalfWayToNextRoot = value <= halfWayToNextSquare
+    
+    // distance from center of spiral
+    val ringDist = lastRoot / 2
 
     if (lastRootEven && underHalfWayToNextRoot)
       //up
-      new Point(-lastRoot / 2, -lastRoot / 2 + (halfWayToNextSquare - value))
+      new Point(-ringDist, -ringDist + (value - lastSquare))
     else if (lastRootEven && !underHalfWayToNextRoot)
       //right
-      new Point(-lastRoot / 2 + (value - halfWayToNextSquare) - 1, lastRoot / 2)
+      new Point(-ringDist + (value - halfWayToNextSquare) - 1, ringDist)
     else if (!lastRootEven && underHalfWayToNextRoot)
       //down
-      new Point(lastRoot / 2 + 1, (halfWayToNextSquare - value) - lastRoot / 2)
+      new Point(ringDist + 1, -ringDist + (value - lastSquare) - 1)
     else
       //left
-      new Point(lastRoot / 2 + 2 + (halfWayToNextSquare - value), -lastRoot / 2 - 1)
+      new Point(ringDist + (halfWayToNextSquare - value) + 2, -ringDist - 1)
   }
 
   def numSpiral(dimensionSize: Int) = {
@@ -50,7 +53,7 @@ object Problem028 extends Problem with App {
   }
 
   val t0 = System.nanoTime();
-  val sol = run
+  val sol = spriralDiagSum(5)
   val t1 = System.nanoTime();
   println(s" spiral diagonal sum = $sol.  Elapsed time ${(t1 - t0) * 1e-9} seconds")
 }
