@@ -19,30 +19,31 @@ object Problem012 extends Problem with App {
   lazy val trianglePairs: Stream[(Int, Long)] = Stream.iterate((1, 1L))(incrementTriangle)
   lazy val triangles3: Stream[Long] = trianglePairs.map(_._2)
 
-  // TODO attempt with scanLeft
-
   def firstTriangleWithMinDivisors(minDivisors: Int): (Int, Long) = {
     trianglePairs.find(x => MyMath.findDivisors(x._2).length > minDivisors).get
   }
 
   def firstTriangleWithMinDivisors2(minDivisors: Int) = {
-    val triangleDivisors = trianglePairs.map(x => MyMath.findDivisors(x._2))
-    trianglePairs.zip(triangleDivisors).find(x => x._2.length > minDivisors).get
+    val triangleDivisors = trianglePairs.map(x => MyMath.factorCount3(x._2))
+    trianglePairs.zip(triangleDivisors).find(x => x._2 > minDivisors).get
   }
-  
+
   // find factors
-//  MyMath.primeDivisors(20).foreach(println)
-//  println(MyMath.factorCount(1000000)) // slow
-//  println(MyMath.findDivisors(1000000)) // fast
-  
+  //  MyMath.primeDivisors(20).foreach(println)
+  val testVal = 1000000
+  //  println(MyMath.factorCount(testVal)) // slow
+  //  println(MyMath.factorCount2(testVal))
+  //  println(MyMath.factorCount3(testVal))
+  //println(MyMath.findDivisors(testVal).length) // fast
+
   // first number with 500 divisors
   //println(Stream.from(1).map(x=>(x,MyMath.findDivisors(x))).find(_._2.length > 500).get)
-  
+
   // find Max divisors in all ints
-  println((1 to 1000).map(x=>(x,MyMath.primeDivisors(x))).maxBy(_._2.length))
+  //println((1 to 1000).map(x=>(x,MyMath.primeDivisors(x))).maxBy(_._2.length))
 
   // trianglePairs.take(10).foreach(println)
   // trianglePairs.take(5).foreach(println)
   // println(triangles2(100000))
-  //println(firstTriangleWithMinDivisors2(500))
+  println(firstTriangleWithMinDivisors2(500))
 }

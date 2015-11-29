@@ -27,32 +27,68 @@ object MyMath {
     rec(n, primeFacts)
   }
 
-  // second attempt to find factor Count
-  def factorCount2(n: Long, currentDivisorCount: Int = 0): Int = {
-    if (n % 2 == 0)
-      factorCount2(n / 2, currentDivisorCount + 1)
-    else
-      0
+  // second attempt to find factor Count. This is not functional at all
+  // Process describe at http://code.jasonbhill.com/sage/project-euler-problem-12/
+  def factorCount2(n: Long): Int = {
+    var value = n
 
-    //TODO fix according to http://code.jasonbhill.com/sage/project-euler-problem-12/
-    //    val first = if (n % 2 == 0) n/2 else n
-    //    
-    //    val divisors = 1
-    //    val count = 0
-    //    
-    //    while n % 2 == 0:
-    //        count += 1
-    //        n = n/2
-    //    divisors = divisors * (count + 1)
-    //    p = 3
-    //    while n != 1:
-    //        count = 0
-    //        while n % p == 0:
-    //            count += 1
-    //            n = n/p
-    //        divisors = divisors * (count + 1)
-    //        p += 2
-    //    return divisors
+    // divide out 2 as many times as possible
+    var count = 0
+    while (value % 2 == 0) {
+      count += 1
+      value = value / 2
+    }
+    var divisors = count + 1
+
+    // divide out odd numbers as many times as possible
+    var p = 3
+    while (value > 1) {
+      var count2 = 0
+
+      while (value % p == 0) {
+        count2 += 1
+        value = value / p
+      }
+
+      divisors = divisors * (count2 + 1)
+      p += 2
+    }
+
+    return divisors
+  }
+
+  // third attempt to find factor count. factor out all primes, using tail recursion
+  def factorCount3(n: Long): Int = {
+    @tailrec
+    def rec(x: Long, remainingPrimes: Stream[Long], currentFactorCount: Int = 1): Int = {
+      val cand = remainingPrimes.head
+
+      if (x == 1) {
+        currentFactorCount
+      } else if (x % cand == 0) {
+        // find max power of cand that divides n. Returns stream of tuple with form (power, cand * power) 
+        val powersOfCand = Stream.from(1).map(p => (p, integerPower(cand, p)))
+        val maxDivisor = powersOfCand.takeWhile(x % _._2 == 0).last
+
+        rec(x / maxDivisor._2, remainingPrimes.tail, currentFactorCount * (maxDivisor._1 + 1))
+      } else {
+        rec(x, remainingPrimes.tail, currentFactorCount)
+      }
+    }
+
+    rec(n, primes)
+  }
+
+  def integerPower(n: Long, pow: Int): Long = {
+    def rec(value: Long, timesToApply: Int, currentTotal: Long = 1): Long = {
+      if (timesToApply == 0)
+        1L
+      else if (timesToApply == 1)
+        currentTotal
+      else
+        rec(value, timesToApply - 1, currentTotal * value)
+    }
+    rec(n, pow, n)
   }
 
   def factorial(n: Int): BigInt = (1 to n).map(BigInt(_)).reduce(_ * _)
