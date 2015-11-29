@@ -1,12 +1,15 @@
 package common
 
+import scala.collection.mutable.LongMap
+import scala.annotation.tailrec
+
 object MyMath {
   val primes: Stream[Long] = 2L #:: Stream.from(3).map(_.longValue).filter(!divisibleByAnyPrime(_))
   def divisibleByAnyPrime(n: Long): Boolean = primes.takeWhile(i => i * i <= n).exists(n % _ == 0)
 
-  def primeFactors(n: Long) = primes.takeWhile(_ <= n).filter(n % _ == 0)
+  def primeDivisors(n: Long) = primes.takeWhile(_ <= n).filter(n % _ == 0)
 
-  //TODO complete factorization method
+  // First attempt at counting factors, using standard recursion. Slow
   def factorCount(n: Long): Int = {
     // recursively find combinations that work
     def rec(value: Long, factorList: List[Long]): Int = {
@@ -20,8 +23,36 @@ object MyMath {
         1 + rec(value / factorList.head, factorList) + rec(value, factorList.tail)
     }
 
-    val primeFacts = primeFactors(n).toList
+    val primeFacts = primeDivisors(n).toList
     rec(n, primeFacts)
+  }
+
+  // second attempt to find factor Count
+  def factorCount2(n: Long, currentDivisorCount: Int = 0): Int = {
+    if (n % 2 == 0)
+      factorCount2(n / 2, currentDivisorCount + 1)
+    else
+      0
+
+    //TODO fix according to http://code.jasonbhill.com/sage/project-euler-problem-12/
+    //    val first = if (n % 2 == 0) n/2 else n
+    //    
+    //    val divisors = 1
+    //    val count = 0
+    //    
+    //    while n % 2 == 0:
+    //        count += 1
+    //        n = n/2
+    //    divisors = divisors * (count + 1)
+    //    p = 3
+    //    while n != 1:
+    //        count = 0
+    //        while n % p == 0:
+    //            count += 1
+    //            n = n/p
+    //        divisors = divisors * (count + 1)
+    //        p += 2
+    //    return divisors
   }
 
   def factorial(n: Int): BigInt = (1 to n).map(BigInt(_)).reduce(_ * _)

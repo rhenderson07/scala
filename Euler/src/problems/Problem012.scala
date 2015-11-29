@@ -31,9 +31,15 @@ object Problem012 extends Problem with App {
   }
   
   // find factors
-  //MyMath.primeFactors(3).foreach(println)
-  println(MyMath.factorCount(1000000)) // slow
-  //println(MyMath.findDivisors(1000000)) // fast
+//  MyMath.primeDivisors(20).foreach(println)
+//  println(MyMath.factorCount(1000000)) // slow
+//  println(MyMath.findDivisors(1000000)) // fast
+  
+  // first number with 500 divisors
+  //println(Stream.from(1).map(x=>(x,MyMath.findDivisors(x))).find(_._2.length > 500).get)
+  
+  // find Max divisors in all ints
+  println((1 to 1000).map(x=>(x,MyMath.primeDivisors(x))).maxBy(_._2.length))
 
   // trianglePairs.take(10).foreach(println)
   // trianglePairs.take(5).foreach(println)
