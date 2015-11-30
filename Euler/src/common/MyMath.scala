@@ -9,9 +9,49 @@ object MyMath {
 
   def primeDivisors(n: Long) = primes.takeWhile(_ <= n).filter(n % _ == 0)
 
-  // First attempt at counting factors, using standard recursion. Slow
-  def factorCount(n: Long): Int = {
-    // recursively find combinations that work
+  /**
+   * First attempt at finding divisors.
+   * Very slow.
+   * Checks every number between 1 and n.
+   */
+  private def findDivisorsFail1(n: Long) = {
+    for (
+      x <- 1L to n if (n % x == 0)
+    ) yield x
+  }
+
+  /**
+   * Second attempt at finding divisors
+   * Use prime divisors, to perform operation extremely quickly.
+   * Return all divisors of the value n.
+   */
+  def findDivisors(n: Long) = {
+    @tailrec
+    def rec(x: Long, remainingPrimes: Stream[Long], currentFactors: List[Long] = List(1L)): List[Long] = {
+      val cand = remainingPrimes.head
+
+      if (x == 1) {
+        currentFactors
+      } else if (x % cand == 0) {
+        // find powers of cand that divide n.
+        val powersOfCand = Stream.from(1).map(power(cand, _)).takeWhile(x % _ == 0)
+
+        // multiply each power by previously identified factors
+        val newDivisors = powersOfCand.map(p => currentFactors.map(x => x * p)).flatten.toList
+
+        rec(x / powersOfCand.max, remainingPrimes.tail, newDivisors ::: currentFactors)
+      } else {
+        rec(x, remainingPrimes.tail, currentFactors)
+      }
+    }
+
+    rec(n, primes).sorted
+  }
+
+  /**
+   * First attempt at counting factors, using standard recursion. Performs very slow
+   */
+  private def divisorCountFail1(n: Long): Int = {
     def rec(value: Long, factorList: List[Long]): Int = {
       if (value == 1L)
         1
@@ -27,9 +67,12 @@ object MyMath {
     rec(n, primeFacts)
   }
 
-  // second attempt to find factor Count. This is not functional at all
-  // Process describe at http://code.jasonbhill.com/sage/project-euler-problem-12/
-  def factorCount2(n: Long): Int = {
+  /**
+   * Second attempt to find factor Count. Factors out powers of odd values. Does not focus exclusively on primes.
+   * This solution follows an imperative paradigm.
+   * Process described at http://code.jasonbhill.com/sage/project-euler-problem-12/
+   */
+  private def divisorCountFail2(n: Long): Int = {
     var value = n
 
     // divide out 2 as many times as possible
@@ -57,29 +100,21 @@ object MyMath {
     return divisors
   }
 
-  // third attempt to find factor count. factor out all primes, using tail recursion
-  def factorCount3(n: Long): Int = {
-    @tailrec
-    def rec(x: Long, remainingPrimes: Stream[Long], currentFactorCount: Int = 1): Int = {
-      val cand = remainingPrimes.head
-
-      if (x == 1) {
-        currentFactorCount
-      } else if (x % cand == 0) {
-        // find max power of cand that divides n. Returns stream of tuple with form (power, cand * power) 
-        val powersOfCand = Stream.from(1).map(p => (p, integerPower(cand, p)))
-        val maxDivisor = powersOfCand.takeWhile(x % _._2 == 0).last
-
-        rec(x / maxDivisor._2, remainingPrimes.tail, currentFactorCount * (maxDivisor._1 + 1))
-      } else {
-        rec(x, remainingPrimes.tail, currentFactorCount)
-      }
-    }
-
-    rec(n, primes)
+  /**
+   *  Third attempt to find factor count.
+   *  Factors out all primes, using tail recursion.
+   *  Runs extremely fast
+   */
+  def divisorCount(n: Long): Int = {
+    findDivisors(n).length
   }
 
-  def integerPower(n: Long, pow: Int): Long = {
+  /**
+   * Power operation that only operates on Long values.
+   * This is more accurate than Math.pow, which returns a double.
+   * This is faster than BigInt.Pow() which performs costly conversions.
+   */
+  def power(n: Long, pow: Int): Long = {
     def rec(value: Long, timesToApply: Int, currentTotal: Long = 1): Long = {
       if (timesToApply == 0)
         1L
@@ -91,9 +126,15 @@ object MyMath {
     rec(n, pow, n)
   }
 
+  /**
+   * Perform the factorial function:
+   * n! = 1 * 2 * ... * (n-1) * n
+   */
   def factorial(n: Int): BigInt = (1 to n).map(BigInt(_)).reduce(_ * _)
 
-  // does the same as the above factorial function, with a more concise syntax.
+  /**
+   * Does the same as the above factorial function, with a more concise, foldLeft syntax.
+   */
   private def factorial2(n: Int): BigInt = (BigInt(1) /: (1 to n))(_ * _)
 
   /**
@@ -108,16 +149,13 @@ object MyMath {
 
   val squares: Stream[Long] = Stream.from(0).map(x => x.longValue * x)
 
-  // return the last or current integer square root. Avoids the rounding errors of floating point math
+  /**
+   *  Return the last or current integer square root. Avoids the rounding errors of floating point math.
+   */
   def intSqrt(n: Int): Int = squares.indexWhere(_ > n) - 1
 
-  // return the next or current sqrt.
+  /**
+   *  Return the next or current sqrt.
+   */
   def intSqrtRoundUp(n: Int): Int = squares.indexWhere(_ >= n)
-
-  // find divisors
-  def findDivisors(n: Long) = {
-    for (
-      x <- 1L to n if (n % x == 0)
-    ) yield x
-  }
 }
