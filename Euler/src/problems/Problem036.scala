@@ -1,7 +1,6 @@
 
 package problems
 
-import scala.annotation.tailrec
 import common.Strings
 
 object Problem036 extends Problem with App {

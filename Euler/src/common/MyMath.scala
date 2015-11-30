@@ -142,6 +142,7 @@ object MyMath {
    * Return the individual digits of the provided number
    */
   def asListOfDigits(n: BigInt): List[Int] = n.toString.toList.map(_.asDigit)
+  def asListOfDigits(n: Int): List[Int] = n.toString.toList.map(_.asDigit)
 
   /**
    * sum all the digits in a BigInt. This is a common operation in Project Euler
