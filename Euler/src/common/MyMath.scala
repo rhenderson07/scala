@@ -115,6 +115,7 @@ object MyMath {
    * This is faster than BigInt.Pow() which performs costly conversions.
    */
   def power(n: Long, pow: Int): Long = {
+    @tailrec
     def rec(value: Long, timesToApply: Int, currentTotal: Long = 1): Long = {
       if (timesToApply == 0)
         1L
