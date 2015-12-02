@@ -37,7 +37,7 @@ object WeatherReporter extends App {
       D(temp) = main("temp")
       D(pressure) = main("pressure")
       D(humidity) = main("humidity")
-    } yield { 
+    } yield {
       new Weather(name, temp, pressure, humidity)
     }
 
@@ -71,10 +71,5 @@ object WeatherReporter extends App {
     getWeather(city)
   }
 
-    run
-
-  //  val testURL = "http://api.openweathermap.org/data/2.5/weather?q=London,uk&appid=2de143494c0b295cca9337e1e96b00e0"
-//  val testResponse = """{"coord":{"lon":-0.13,"lat":51.51},"weather":[{"id":802,"main":"Clouds","description":"scattered clouds","icon":"03n"}],"base":"cmc stations","main":{"temp":283.58,"pressure":1026.19,"humidity":93,"temp_min":283.58,"temp_max":283.58,"sea_level":1036.42,"grnd_level":1026.19},"wind":{"speed":5.72,"deg":233},"clouds":{"all":44},"dt":1448995277,"sys":{"message":0.0042,"country":"GB","sunrise":1448955864,"sunset":1448985284},"id":2643743,"name":"London","cod":200}"""
-//  val testData = parseWeatherJsonString(testResponse)
-//  println(testData)
+  run
 }
