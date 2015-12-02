@@ -44,7 +44,7 @@ object UserInput {
   }
 
   // Prompt user for Double input.
-  def promptNonNegativeDouble(): Int = {
+  def promptNonNegativeDouble(): Double = {
     try {
       val userInput = scala.io.StdIn.readDouble()
       if (userInput >= 0) {
