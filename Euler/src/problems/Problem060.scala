@@ -3,8 +3,10 @@ package problems
 
 import scala.annotation.tailrec
 import common.MyMath
+import common.Lists
 import my_collections.MyTraversable
-import my_collections.MyTraversable
+
+
 
 object Problem060 extends Problem with App {
   def number = 60
@@ -24,7 +26,7 @@ object Problem060 extends Problem with App {
 
   //  val isPrimePair = (n: Long, m: Long) => primesContains(concat(n, m)) && primesContains(concat(m, n))
   def isPrimePair(n: Long, m: Long) = primesContains(concat(n, m)) && primesContains(concat(m, n))
-  def isPrimeFamily = Lists.holdsForFamily(isPrimePair)_
+  val isPrimeFamily = Lists.holdsForFamily(isPrimePair)_
 
   // first attempt. slow, using tail recursion. ~80 seconds to find family of 4.
   def findPrimeFamily_Fail1(targetSetSize: Int) = {
