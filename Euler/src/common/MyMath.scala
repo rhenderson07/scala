@@ -4,7 +4,7 @@ import scala.collection.mutable.LongMap
 import scala.annotation.tailrec
 
 object MyMath {
-  val primes: Stream[Long] = 2L #:: Stream.from(3).map(_.longValue).filter(!divisibleByAnyPrime(_))
+  val primes: Stream[Long] = 2L #:: Stream.from(3, 2).map(_.longValue).filter(!divisibleByAnyPrime(_))
   def divisibleByAnyPrime(n: Long): Boolean = primes.takeWhile(i => i * i <= n).exists(n % _ == 0)
 
   def primeDivisors(n: Long) = primes.takeWhile(_ <= n).filter(n % _ == 0)

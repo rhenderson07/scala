@@ -2,12 +2,14 @@
 package problems
 
 import scala.annotation.tailrec
-import common.Lists
 import common.MyMath
+import my_collections.MyTraversable
+import my_collections.MyTraversable
 
 object Problem060 extends Problem with App {
   def number = 60
   def description = "Find the lowest sum for a set of five primes for which any two primes concatenate to produce another prime."
+  implicit def listToMyTraversable[T](l: Traversable[T]) = new MyTraversable(l)
 
   lazy val run = splork3(5).sum
   
@@ -38,7 +40,11 @@ object Problem060 extends Problem with App {
     }
 
     rec(primes).maxBy(_.length).reverse
-  }
+  } 
+  
+//  def isPrimeSet = MyTraversable.
+  
+//  primes.findSet(_.holdsForFamily(isPrimePair))(3)
 
   println(run)
 }
