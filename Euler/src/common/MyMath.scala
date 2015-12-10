@@ -1,6 +1,7 @@
 package common
 
 import scala.collection.mutable.LongMap
+import scala.math.BigDecimal.RoundingMode
 import scala.annotation.tailrec
 
 object MyMath {
@@ -176,8 +177,42 @@ object MyMath {
       }
     }
 
+    //TODO remove setScale if this does not improve accuracy
     val initialLow = BigDecimal(0)
-    val initialHigh = BigDecimal(Math.sqrt(A.doubleValue()))
+    val initialHigh = BigDecimal(Math.sqrt(A.doubleValue())).setScale(100)
     rec(initialLow, initialHigh)
+  }
+
+  /**
+   * Private utility method used to compute the square root of a BigDecimal.
+   *
+   * Defined at http://stackoverflow.com/questions/13649703/
+   *
+   * @author Luciano Culacciatti
+   * @url http://www.codeproject.com/Tips/257031/Implementing-SqrtRoot-in-BigDecimal
+   */
+  def bigSqrt(scale: Int)(n: BigDecimal): BigDecimal = {
+    val calcuationContext = new java.math.MathContext(scale + 10)
+    val ONE = BigDecimal(1).apply(calcuationContext)
+    val SQRT_DIG = BigDecimal(scale, calcuationContext)
+    val SQRT_PRE = BigDecimal(10, calcuationContext).pow(SQRT_DIG.intValue())
+    val inputVal = n.apply(calcuationContext)
+
+    @tailrec
+    def sqrtNewtonRaphson(c: BigDecimal, xn: BigDecimal, precision: BigDecimal): BigDecimal = {
+      val fx = xn.pow(2) - c
+      val fpx = xn * 2
+      val xn1 = xn - (fx / fpx.setScale(2 * SQRT_DIG.intValue()))
+      val currentSquare = xn1.pow(2);
+      val currentPrecision = (currentSquare - c).abs
+
+      if (currentPrecision.compare(precision) < 0) {
+        val returnValContext = new java.math.MathContext(scale)
+        xn1.apply(returnValContext)
+      } else
+        sqrtNewtonRaphson(c, xn1, precision)
+    }
+
+    sqrtNewtonRaphson(inputVal, ONE, ONE / SQRT_PRE);
   }
 }
