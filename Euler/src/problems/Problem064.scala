@@ -1,10 +1,8 @@
 package problems
 
 import common.MyMath
-import scala.math.BigDecimal.RoundingMode
 import common.myMath.ContinuedFraction
 import common.myMath.ContinuedFractionGenerator
-import common.myMath.ContinuedFraction
 
 object Problem064 extends Problem with App {
 
@@ -12,12 +10,12 @@ object Problem064 extends Problem with App {
   def description = "How many continued fractions for N <= 10000 have an odd period?"
   lazy val run = oddPeriodCount(Target).longValue()
 
-  lazy val Target = 13
+  lazy val Target = 10000
 
-  def oddPeriodCount(upperBound: Int) = (1 to upperBound).map(rootContinuedFraction).count(_.period % 2 == 1)
+  def oddPeriodCount(upperBound: Int): Int = (1 to upperBound).map(rootContinuedFraction).count(_.period % 2 == 1)
 
   def rootContinuedFraction(n: Int): ContinuedFraction = {
-    val BigDecPrecision = 150
+    val BigDecPrecision = 200
     val root = MyMath.bigSqrt(BigDecPrecision)(n)
     ContinuedFractionGenerator.asContinuedFraction(root)
   }
@@ -25,8 +23,8 @@ object Problem064 extends Problem with App {
   //  println(run)
 
   //test for specific value
-  println(rootContinuedFraction(552))
+  //println(rootContinuedFraction(4846))
 
   //test for range
-  (1 to 1000).foreach(x => println(x, rootContinuedFraction(x)))
+  (1 to 10000).foreach(x => println(x, rootContinuedFraction(x)))
 }

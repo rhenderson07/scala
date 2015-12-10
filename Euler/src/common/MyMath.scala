@@ -191,28 +191,30 @@ object MyMath {
    * @author Luciano Culacciatti
    * @url http://www.codeproject.com/Tips/257031/Implementing-SqrtRoot-in-BigDecimal
    */
-  def bigSqrt(scale: Int)(n: BigDecimal): BigDecimal = {
+  def bigSqrt(scale: Int)(value: BigDecimal): BigDecimal = {
     val calcuationContext = new java.math.MathContext(scale + 10)
     val ONE = BigDecimal(1).apply(calcuationContext)
     val SQRT_DIG = BigDecimal(scale, calcuationContext)
-    val SQRT_PRE = BigDecimal(10, calcuationContext).pow(SQRT_DIG.intValue())
-    val inputVal = n.apply(calcuationContext)
+    val SQRT_PREC = BigDecimal(10, calcuationContext).pow(SQRT_DIG.intValue())
+
+    val precision = ONE / SQRT_PREC
+    val n = value.apply(calcuationContext)
 
     @tailrec
-    def sqrtNewtonRaphson(c: BigDecimal, xn: BigDecimal, precision: BigDecimal): BigDecimal = {
-      val fx = xn.pow(2) - c
+    def sqrtNewtonRaphson(xn: BigDecimal): BigDecimal = {
+      val fx = xn.pow(2) - n
       val fpx = xn * 2
-      val xn1 = xn - (fx / fpx.setScale(2 * SQRT_DIG.intValue()))
+      val xn1 = xn - (fx / fpx.setScale(2 * precision.intValue(), RoundingMode.HALF_DOWN))
       val currentSquare = xn1.pow(2);
-      val currentPrecision = (currentSquare - c).abs
+      val currentPrecision = (currentSquare - n).abs
 
       if (currentPrecision.compare(precision) < 0) {
         val returnValContext = new java.math.MathContext(scale)
         xn1.apply(returnValContext)
       } else
-        sqrtNewtonRaphson(c, xn1, precision)
+        sqrtNewtonRaphson(xn1)
     }
 
-    sqrtNewtonRaphson(inputVal, ONE, ONE / SQRT_PRE);
+    sqrtNewtonRaphson(ONE);
   }
 }
