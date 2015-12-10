@@ -160,4 +160,24 @@ object MyMath {
    *  Return the next or current sqrt.
    */
   def intSqrtRoundUp(n: Int): Int = squares.indexWhere(_ >= n)
+
+  /**
+   * Square root using BigDecimal. Very accurate. Base precision is 34
+   */
+  def sqrt(A: BigDecimal): BigDecimal = {
+    val TWO = BigDecimal(2)
+
+    def rec(lowBid: BigDecimal, highBid: BigDecimal): BigDecimal = {
+      if (lowBid.equals(highBid))
+        highBid
+      else {
+        val newHigh = (highBid + A / highBid) / TWO
+        rec(highBid, newHigh)
+      }
+    }
+
+    val initialLow = BigDecimal(0)
+    val initialHigh = BigDecimal(Math.sqrt(A.doubleValue()))
+    rec(initialLow, initialHigh)
+  }
 }
