@@ -13,8 +13,8 @@ import scala.util.parsing.json._
  *
  * Challenges: *
  * 1) The API gives the sunrise and sunset times, as well as the humidity and a description of the weather. Display that data in a meaningful way.
- * 2) The API gives the wind direction in degrees. Convert it to words such as “North,” “West,” “South,” “Southwest,” or even “South-southwest.”
- * 3)	Develop a scheme that lets the weather program tell you what kind of day it is. If it’s 70 degrees and clear skies, say that it’s a nice day out!
+ * 2) The API gives the wind direction in degrees. Convert it to words such as North, West, South, Southwest, or even South-southwest.
+ * 3)	Develop a scheme that lets the weather program tell you what kind of day it is. If it's 70 degrees and clear skies, say that it's a nice day out!
  * 4) Display the temperature in both Celsius and Fahrenheit.
  * 5) Based on the information, determine if the person needs a coat or an umbrella.
  */

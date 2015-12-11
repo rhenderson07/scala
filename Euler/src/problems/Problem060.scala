@@ -1,15 +1,17 @@
 
 package problems
 
+import scala.BigInt
 import scala.annotation.tailrec
+
 import common.Lists
 import common.MyMath
-import scala.collection.mutable.HashSet
-import scala.util.control.Breaks._
+import my_collections.MyTraversable
 
 object Problem060 extends Problem with App {
   def number = 60
   def description = "Find the lowest sum for a set of five primes for which any two primes concatenate to produce another prime."
+  implicit def listToMyTraversable[T](l: Traversable[T]) = new MyTraversable(l)
 
   lazy val run = findPrimeFamily_Fail1(3).sum
 
@@ -45,6 +47,10 @@ object Problem060 extends Problem with App {
 
     rec(primes).maxBy(_.length).reverse
   }
+
+  //  def isPrimeSet = MyTraversable.
+
+  //  primes.findSet(_.holdsForFamily(isPrimePair))(3)
 
   // second attempt. faster, using streams. ~40 seconds to find a family of 4
   def findPrimeFamily_Fail2(size: Int, cap: Long = 1000) = primes.takeWhile(_ < cap).combinations(size).find(isPrimeFamily(_))

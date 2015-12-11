@@ -2,7 +2,7 @@ package problems
 
 object ProblemRunner extends App {
 
-  val p = Problem060
+  val p = Problem064
 
   println("Problem %d: %s".format(p.number, p.description))
 

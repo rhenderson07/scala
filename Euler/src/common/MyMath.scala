@@ -1,10 +1,11 @@
 package common
 
 import scala.collection.mutable.LongMap
+import scala.math.BigDecimal.RoundingMode
 import scala.annotation.tailrec
 
 object MyMath {
-  val primes: Stream[Long] = 2L #:: Stream.from(3).map(_.longValue).filter(!divisibleByAnyPrime(_))
+  val primes: Stream[Long] = 2L #:: Stream.from(3, 2).map(_.longValue).filter(!divisibleByAnyPrime(_))
   def divisibleByAnyPrime(n: Long): Boolean = primes.takeWhile(i => i * i <= n).exists(n % _ == 0)
 
   def primeDivisors(n: Long) = primes.takeWhile(_ <= n).filter(n % _ == 0)
@@ -160,4 +161,60 @@ object MyMath {
    *  Return the next or current sqrt.
    */
   def intSqrtRoundUp(n: Int): Int = squares.indexWhere(_ >= n)
+
+  /**
+   * Square root using BigDecimal. Very accurate. Base precision is 34
+   */
+  def sqrt(A: BigDecimal): BigDecimal = {
+    val TWO = BigDecimal(2)
+
+    def rec(lowBid: BigDecimal, highBid: BigDecimal): BigDecimal = {
+      if (lowBid.equals(highBid))
+        highBid
+      else {
+        val newHigh = (highBid + A / highBid) / TWO
+        rec(highBid, newHigh)
+      }
+    }
+
+    //TODO remove setScale if this does not improve accuracy
+    val initialLow = BigDecimal(0)
+    val initialHigh = BigDecimal(Math.sqrt(A.doubleValue())).setScale(100)
+    rec(initialLow, initialHigh)
+  }
+
+  /**
+   * Private utility method used to compute the square root of a BigDecimal.
+   *
+   * Defined at http://stackoverflow.com/questions/13649703/
+   *
+   * @author Luciano Culacciatti
+   * @url http://www.codeproject.com/Tips/257031/Implementing-SqrtRoot-in-BigDecimal
+   */
+  def bigSqrt(scale: Int)(value: BigDecimal): BigDecimal = {
+    val calcuationContext = new java.math.MathContext(scale + 10)
+    val ONE = BigDecimal(1).apply(calcuationContext)
+    val SQRT_DIG = BigDecimal(scale, calcuationContext)
+    val SQRT_PREC = BigDecimal(10, calcuationContext).pow(SQRT_DIG.intValue())
+
+    val precision = ONE / SQRT_PREC
+    val n = value.apply(calcuationContext)
+
+    @tailrec
+    def sqrtNewtonRaphson(xn: BigDecimal): BigDecimal = {
+      val fx = xn.pow(2) - n
+      val fpx = xn * 2
+      val xn1 = xn - (fx / fpx.setScale(2 * precision.intValue(), RoundingMode.HALF_DOWN))
+      val currentSquare = xn1.pow(2);
+      val currentPrecision = (currentSquare - n).abs
+
+      if (currentPrecision.compare(precision) < 0) {
+        val returnValContext = new java.math.MathContext(scale)
+        xn1.apply(returnValContext)
+      } else
+        sqrtNewtonRaphson(xn1)
+    }
+
+    sqrtNewtonRaphson(ONE);
+  }
 }
