@@ -52,4 +52,30 @@ object ContinuedFractionGenerator {
     else
       repeatRaw.map(getWholePart).toList
   }
+
+  ////////////////////////////////////////////////////////////////
+  //Attempt 2: borrowing from Euler:
+  def asContinuedFraction2(n: Int): ContinuedFraction = {
+
+    @tailrec
+    def rec(numer: Int, t: Int, denom: Int, pastResults: Set[(Int, Int, Int)], aggResult: List[Int]): List[Int] = {
+      val d2 = (numer - t * t) / denom
+      val n2 = ((Math.sqrt(numer) - t) * 1 / d2).toInt
+      val t2 = -t - d2 * n2
+
+      if (pastResults.contains(n2, t2, d2)) {
+        aggResult.drop(1)
+      } else {
+        rec(numer, t2, d2, pastResults + ((n2, t2, d2)), aggResult :+ n2)
+      }
+    }
+
+    val root = Math.sqrt(n)
+    if (root.isWhole()) {
+      new ContinuedFraction(root.toInt, List())
+    } else {
+      val result = rec(n, 0, 1, Set(), List())
+      new ContinuedFraction(result.head, result.tail)
+    }
+  }
 }

@@ -12,9 +12,10 @@ object Problem064 extends Problem with App {
 
   lazy val Target = 10000
 
-  // My Solution: about 200 seconds. Most time is spent finding the square root
-  def oddPeriodCount(upperBound: Int): Int = (1 to upperBound).par.map(rootContinuedFraction).count(_.period % 2 == 1)
+  def oddPeriodCount(upperBound: Int): Int = (1 to upperBound).par.map(rootContinuedFraction2).count(_.period % 2 == 1)
 
+  // Attempt 1: runs in about 200 seconds. Requires square root represented as high precision BigDecimal. 
+  // Most time is spent finding the square root
   def rootContinuedFraction(n: Int): ContinuedFraction = {
     val BasePrecision = 150
     val PrecisionModifierConstant = 30
@@ -24,15 +25,12 @@ object Problem064 extends Problem with App {
     ContinuedFractionGenerator.asContinuedFraction(root)
   }
 
-  //  println(run)
+  // Attempt 2: borrowing from Euler
+  def rootContinuedFraction2(n: Int): ContinuedFraction = {
+    ContinuedFractionGenerator.asContinuedFraction2(n)
+  }
 
-  //test for specific value
-  //println(rootContinuedFraction(4846))
-
-  //test for range
-  //  (1 to 10000).par.foreach(x => println(x, rootContinuedFraction(x)))
-
-  // From Euler. About 1 second
+  // Solution from Euler. About 1 second
   // defined at https://projecteuler.net/thread=64;page=7
   def getNums(n: Int, t: Int, d: Int, pastResults: Set[(Int, Int, Int)], aggResult: List[Int]): List[Int] = {
     val d2 = (n - t * t) / d
@@ -45,6 +43,11 @@ object Problem064 extends Problem with App {
   def oddPeriod(x: Int) = !Math.sqrt(x).isWhole() && getNums(x, 0, 1, Set(), List()).length % 2 == 1
 
   val res = (1 to 10000).count(oddPeriod)
-  println(res)
+
+  ///////////////// tests /////////////
+
+  println(run)
+
+  //  println(res)
 
 }
