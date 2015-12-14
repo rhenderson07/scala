@@ -31,8 +31,11 @@ object Problem011 extends Problem with App {
   def readAsInts(s: String) = s.split(' ').map(_.toInt)
   def readAsGrid(s: String) = s.split('\n').map(_.trim).map(readAsInts(_))
 
-  lazy val grid = readAsGrid(gridStr)
+  val grid = readAsGrid(gridStr)
   
-  
-//  val maxVert = grid.
+  def readHorizontal(grid: Array[Array[Int]]) = {
+    
+  }
+
+  //  val maxVert = grid.
 }
