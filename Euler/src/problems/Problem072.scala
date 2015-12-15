@@ -11,13 +11,13 @@ object Problem072 extends Problem with App {
   def number = 72
   def description = "How many elements would be contained in the set of reduced proper fractions for d <= 1,000,000?"
 
-  lazy val run = properFractionCountUnder4(target).longValue()
+  lazy val run = success1(target).longValue()
   //  lazy val run = fractionsLessThan(target).size.longValue()
 
   lazy val target = 1000000
 
   // First attempt. very slow. 1.6 seconds for target 3000
-  {
+  def fail1(n: Int) = {
     def fractionsLessThan(n: Int) = {
       val fractions = for {
         denom <- 1 to n
@@ -29,46 +29,43 @@ object Problem072 extends Problem with App {
 
       fractions //.toList
     }
+
+    fractionsLessThan(n).size
   }
 
   // second attempt. 0.9 seconds for target 3000
-  {
+  def fail2(n: Int) = {
     def properFractionCountUnder(n: Int) = {
       (1 to n).map(properFactionCount).sum
     }
     def properFactionCount(n: Int) = {
       (1 to n).count(BigInt(n).gcd(_).equals(1))
     }
+
+    properFractionCountUnder(n)
   }
 
   // third attempt. Cache factors. slow. 1.8 seconds for target 3000
-  {
+  def fail3(n: Int) = {
     lazy val factorCache = scala.collection.mutable.Map[Int, LinearSeq[Long]]()
 
     def factors(number: Int) = {
       factorCache.getOrElseUpdate(number, MyMath.primeDivisors(number))
     }
 
-    def properFractionCountUnder3(n: Int) = {
-      (1 to n).map(properFactionCount3).sum
+    def properFractionCountUnder(n: Int) = {
+      (1 to n).map(properFactionCount).sum
     }
 
-    def properFactionCount3(n: Int) = {
+    def properFactionCount(n: Int) = {
       (1 to n).count(!shareFactor(_, n))
     }
 
     def shareFactor(a: Int, b: Int) = {
       factors(a).intersect(factors(b)).nonEmpty
     }
-  }
 
-  // attempt to produce primes for all values between 1 and target
-  def primeFactorMapTo(n: Int) = {
-    for {
-      x <- 1 to n
-    } yield {
-      MyMath.primeDivisors(x)
-    }
+    properFractionCountUnder(n)
   }
 
   /**
@@ -85,43 +82,65 @@ object Problem072 extends Problem with App {
    * }
    * result += phi[i];
    */
-  def properFractionCountUnder4(limit: Int): Long = {
-    val phi = scala.collection.mutable.Map() ++ (0 to limit).zipWithIndex.toMap
-    var result: Long = 0
+  def success1(n: Int) = {
+    def properFractionCountUnder(limit: Int): Long = {
+      val phi = scala.collection.mutable.Map() ++ (0 to limit).zipWithIndex.toMap
+      var result: Long = 0
 
-    for (i <- 2 to limit) {
-      if (i == phi(i)) {
-        for (j <- i to limit by i) {
-          phi.update(j, phi(j) / i * (i - 1))
+      for (i <- 2 to limit) {
+        if (i == phi(i)) {
+          for (j <- i to limit by i) {
+            phi.update(j, phi(j) / i * (i - 1))
+          }
+        }
+        result += phi(i)
+      }
+      result
+    }
+
+    properFractionCountUnder(n).longValue()
+  }
+
+  // Fifth attempt, counting terms in the Farey series. Very slow, but eventually terminates
+  def fail4(n: Int) = {
+
+    def fareyTerms(n: Int) = {
+      @tailrec
+      def rec(a: Int, b: Int, c: Int, d: Int, currentCount: Long): Long = {
+        if (c > n) {
+          currentCount - 1 // remove 1 to avoid counting the value 0/1
+        } else {
+          val k = (n + b) / d
+          rec(c, d, (k * c - a), (k * d - b), currentCount + 1)
         }
       }
-      result += phi(i)
-    }
-    result
-  }
 
-  def fifth(n: Int) = {
-    //    def farey( n, asc=True ):
-    //    """Python function to print the nth Farey sequence, either ascending or descending."""
-    //    if asc: 
-    //        a, b, c, d = 0, 1,  1 , n     # (*)
-    //    else:
-    //        a, b, c, d = 1, 1, n-1, n     # (*)
-    //    print "%d/%d" % (a,b)
-    //    while (asc and c <= n) or (not asc and a > 0):
-    //        k = int((n + b)/d)
-    //        a, b, c, d = c, d, k*c - a, k*d - b
-    //        print "%d/%d" % (a,b)
-    def farey(n: Int) = {
-      def rec(a: Int, b: Int, c: Int, d: Int): (Int, Int) = {
-        (-1, -1)
-      }
-
-      rec(0, 1, 1, n)
+      rec(0, 1, 1, n, 0)
     }
 
-    farey(n)
+    fareyTerms(n)
   }
 
-  println(run)
+  def fail5(n: Int) = {
+    // represent function as a val
+    val nextFareyTermVal = (a: Int, b: Int, c: Int, d: Int) => {
+      val k = (n + b) / d
+      (c, d, (k * c - a), (k * d - b))
+    }
+
+    // represent function as a def
+    def nextFareyTerm(a: Int, b: Int, c: Int, d: Int) = {
+      val k = (n + b) / d
+      (c, d, (k * c - a), (k * d - b))
+    }
+
+    //iterator for farey terms
+    val fareyGenerator = Iterator.iterate((0, 1, 1, n))((nextFareyTermVal).tupled)
+
+    def properFractionCountUnder(n: Int) = fareyGenerator.takeWhile(_._3 <= n).size - 1
+
+    properFractionCountUnder(n)
+  }
+
+  time(success1)(target)
 }
