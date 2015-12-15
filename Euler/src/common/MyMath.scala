@@ -26,9 +26,9 @@ object MyMath {
    * Use prime divisors, to perform operation extremely quickly.
    * Return all divisors of the value n.
    */
-  def findDivisors(n: Long) = {
+  def findDivisors(n: Long): List[Long] = {
     @tailrec
-    def rec(x: Long, remainingPrimes: Stream[Long], currentFactors: List[Long] = List(1L)): List[Long] = {
+    def rec(x: Long, remainingPrimes: Stream[Long], currentFactors: List[Long]): List[Long] = {
       val cand = remainingPrimes.head
 
       if (x == 1) {
@@ -46,7 +46,7 @@ object MyMath {
       }
     }
 
-    rec(n, primes).sorted
+    rec(n, primes, List(1L))//.sorted
   }
 
   /**
