@@ -3,15 +3,19 @@ package common.upgrades
 import scala.annotation.tailrec
 import scala.collection.immutable.LinearSeq
 
-object Lists {
-  @tailrec
-  def holdsForFamily[T <: Any](property: (T, T) => Boolean)(candList: LinearSeq[T]): Boolean = {
-    if (candList.length <= 1)
-      true
-    else if (candList.tail.forall(property(candList.head, _)))
-      holdsForFamily(property)(candList.tail)
-    else
-      false
+class MyList[T](target: List[T]) {
+  def holdsForFamily(property: (T, T) => Boolean): Boolean = {
+    @tailrec
+    def rec(candList: List[T]): Boolean = {
+      if (candList.length <= 1)
+        true
+      else if (candList.tail.forall(property(candList.head, _)))
+        rec(candList.tail)
+      else
+        false
+    }
+
+    rec(target)
   }
 
   /**
