@@ -1,8 +1,8 @@
 package problems
 
-import common.MyMath
-import common.myMath.ContinuedFraction
-import common.myMath.ContinuedFractionGenerator
+import common.math.MyMath
+import common.math.ContinuedFraction
+import common.math.ContinuedFractionGenerator
 
 object Problem064 extends Problem with App {
 

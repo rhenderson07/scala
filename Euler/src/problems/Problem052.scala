@@ -1,7 +1,7 @@
 
 package problems
 
-import common.MyMath
+import common.math.MyMath
 
 object Problem052 extends Problem with App {
   def number = 52

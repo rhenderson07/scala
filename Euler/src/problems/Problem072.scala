@@ -1,7 +1,7 @@
 
 package problems
 
-import common.MyMath
+import common.math.MyMath
 import scala.collection.LinearSeq
 import scala.collection.mutable.HashTable
 import scala.collection.parallel.mutable.ParHashMap

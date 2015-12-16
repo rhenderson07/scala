@@ -1,5 +1,5 @@
 package problems
-import common.MyMath
+import common.math.MyMath
 
 object Problem010 extends Problem with App {
   def number = 10

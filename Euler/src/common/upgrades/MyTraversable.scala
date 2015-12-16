@@ -1,10 +1,8 @@
-package my_collections
+package common.upgrades
 
 import scala.annotation.tailrec
 
 class MyTraversable[T](target: Traversable[T]) {
-  implicit def listToMyTraversable[T](l: Traversable[T]) = new MyTraversable(l)
-
   // traverse a stream to find the first subset with a property
   def findSet(property: List[T] => Boolean)(size: Int): List[T] = {
     List()

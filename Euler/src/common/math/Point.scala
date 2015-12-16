@@ -1,4 +1,4 @@
-package common
+package common.math
 
 class Point(val x: Int, val y: Int) extends Equals {
   override def toString() = {
@@ -6,12 +6,12 @@ class Point(val x: Int, val y: Int) extends Equals {
   }
 
   def canEqual(other: Any) = {
-    other.isInstanceOf[common.Point]
+    other.isInstanceOf[Point]
   }
 
   override def equals(other: Any) = {
     other match {
-      case that: common.Point => that.canEqual(Point.this) && x == that.x && y == that.y
+      case that: Point => that.canEqual(Point.this) && x == that.x && y == that.y
       case _ => false
     }
   }

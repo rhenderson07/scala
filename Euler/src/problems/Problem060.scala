@@ -4,14 +4,12 @@ package problems
 import scala.BigInt
 import scala.annotation.tailrec
 
-import common.Lists
-import common.MyMath
-import my_collections.MyTraversable
+import common.upgrades.Lists
+import common.math.MyMath
 
 object Problem060 extends Problem with App {
   def number = 60
   def description = "Find the lowest sum for a set of five primes for which any two primes concatenate to produce another prime."
-  implicit def listToMyTraversable[T](l: Traversable[T]) = new MyTraversable(l)
 
   lazy val run = findPrimeFamily_Fail1(3).sum
 

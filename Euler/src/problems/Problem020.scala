@@ -2,7 +2,7 @@
 package problems
 
 import scala.annotation.tailrec
-import common.MyMath
+import common.math.MyMath
 
 object Problem020 extends Problem with App {
   def number = 20

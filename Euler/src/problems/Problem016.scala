@@ -2,7 +2,7 @@
 package problems
 
 import scala.BigInt
-import common.MyMath
+import common.math.MyMath
 
 object Problem016 extends Problem with App {
   def number = 16

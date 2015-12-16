@@ -1,8 +1,8 @@
 
 package problems
 
-import common.MyMath
-import common.Point
+import common.math.MyMath
+import common.math.Point
 
 object Problem028 extends Problem with App {
   def number = 28

@@ -1,11 +1,11 @@
-package common
+package common.upgrades
 
-import org.scalatest.FunSuite
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import Lists._
-import com.sun.org.apache.xpath.internal.operations.NotEquals
+import scala.annotation.tailrec
 import scala.collection.immutable.LinearSeq
+
+import org.junit.runner.RunWith
+import org.scalatest.FunSuite
+import org.scalatest.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
 class ListsSuite extends FunSuite {
