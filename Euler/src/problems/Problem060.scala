@@ -4,7 +4,7 @@ package problems
 import scala.BigInt
 import scala.annotation.tailrec
 
-import common.upgrades.MyList
+import common.upgrades.MyLinearSeq
 import common.math.MyMath
 import common.upgrades.Implicits._
 
