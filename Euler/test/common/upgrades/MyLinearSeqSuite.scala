@@ -4,7 +4,7 @@ import org.junit.runner.RunWith
 import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
 
-import common.upgrades.Implicits.listToMyList
+import common.upgrades.Implicits._
 
 @RunWith(classOf[JUnitRunner])
 class ListsSuite extends FunSuite {
