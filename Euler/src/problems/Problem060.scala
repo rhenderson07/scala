@@ -3,10 +3,10 @@ package problems
 
 import scala.BigInt
 import scala.annotation.tailrec
-
 import common.upgrades.MyLinearSeq
 import common.math.MyMath
 import common.upgrades.Implicits._
+import common.math.Primes
 
 object Problem060 extends Problem with App {
   def number = 60
@@ -14,20 +14,20 @@ object Problem060 extends Problem with App {
 
   lazy val run = findPrimeFamily_Fail1(3).sum
 
-  lazy val primes = MyMath.primes
+  lazy val primes = Primes.stream
 
   def concat(n: Long, m: Long): Long = (n.toString() + m.toString()).toLong
 
   //ensure that value is prime. Fairly slow
   def primesContains(n: Long): Boolean = primes.takeWhile(_ <= n).contains(n)
   def isPrimePair(m: Long, n: Long) = primesContains(concat(m, n)) && primesContains(concat(n, m))
-  def isPrimeFamily(l:List[Long]) = l.holdsForFamily(isPrimePair)
+  def isPrimeFamily(l: List[Long]) = l.holdsForFamily(isPrimePair)
 
   // value is probably prime. much faster
   def isProbablyPrimePair(certainty: Int)(m: Long, n: Long) = {
     BigInt(concat(m, n)).isProbablePrime(certainty) && BigInt(concat(n, m)).isProbablePrime(certainty)
   }
-  def isProbablyPrimeFamily(l:List[Long]) = l.holdsForFamily(isProbablyPrimePair(5))
+  def isProbablyPrimeFamily(l: List[Long]) = l.holdsForFamily(isProbablyPrimePair(5))
 
   // first attempt. slow, using tail recursion. ~80 seconds to find family of 4.
   def findPrimeFamily_Fail1(targetSetSize: Int) = {
@@ -72,7 +72,7 @@ object Problem060 extends Problem with App {
         false
   }
 
-  def isPrimeFamilyArray(l:List[Int]) = l.holdsForFamily((a: Int, b: Int) => primePairArr(a)(b) == true)
+  def isPrimeFamilyArray(l: List[Int]) = l.holdsForFamily((a: Int, b: Int) => primePairArr(a)(b) == true)
 
   lazy val results = {
     for {

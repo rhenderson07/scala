@@ -9,10 +9,8 @@ import scala.math.BigDecimal.int2bigDecimal
 import scala.math.BigInt.int2bigInt
 
 object MyMath {
-  val primes: Stream[Long] = 2L #:: Stream.from(3, 2).map(_.toLong).filter(!divisibleByAnyPrime(_))
-  def divisibleByAnyPrime(n: Long): Boolean = primes.takeWhile(i => i * i <= n).exists(n % _ == 0)
 
-  def primeDivisors(n: Long) = primes.takeWhile(_ <= n).filter(n % _ == 0)
+  def primeDivisors(n: Long) = Primes.stream.takeWhile(_ <= n).filter(n % _ == 0)
 
   /**
    * First attempt at finding divisors.
@@ -50,7 +48,7 @@ object MyMath {
       }
     }
 
-    rec(n, primes, List(1L)) //.sorted
+    rec(n, Primes.stream, List(1L)) //.sorted
   }
 
   /**
