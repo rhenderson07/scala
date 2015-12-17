@@ -1,16 +1,15 @@
-package common
+package common.upgrades
 
-import org.scalatest.FunSuite
 import org.junit.runner.RunWith
+import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
-import Lists._
-import com.sun.org.apache.xpath.internal.operations.NotEquals
-import scala.collection.immutable.LinearSeq
+
+import common.upgrades.Implicits._
 
 @RunWith(classOf[JUnitRunner])
 class ListsSuite extends FunSuite {
 
-  def targetFunction[T <: Any](property: (T, T) => Boolean)(candList: LinearSeq[T]): Boolean = Lists.holdsForFamily(property)(candList)
+  def targetFunction[T <: Any](property: (Int, Int) => Boolean)(l: List[Int]) = l.holdsForFamily(property)
 
   def equals[T <: Any](t1: T, t2: T) = t1.equals(t2)
   def notEqual[T <: Any](t1: T, t2: T) = !t1.equals(t2)

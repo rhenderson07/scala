@@ -3,32 +3,31 @@ package problems
 
 import scala.BigInt
 import scala.annotation.tailrec
-
-import common.Lists
-import common.MyMath
-import my_collections.MyTraversable
+import common.upgrades.MyLinearSeq
+import common.math.MyMath
+import common.upgrades.Implicits._
+import common.math.Primes
 
 object Problem060 extends Problem with App {
   def number = 60
   def description = "Find the lowest sum for a set of five primes for which any two primes concatenate to produce another prime."
-  implicit def listToMyTraversable[T](l: Traversable[T]) = new MyTraversable(l)
 
   lazy val run = findPrimeFamily_Fail1(3).sum
 
-  lazy val primes = MyMath.primes
+  lazy val primes = Primes.stream
 
   def concat(n: Long, m: Long): Long = (n.toString() + m.toString()).toLong
 
   //ensure that value is prime. Fairly slow
   def primesContains(n: Long): Boolean = primes.takeWhile(_ <= n).contains(n)
   def isPrimePair(m: Long, n: Long) = primesContains(concat(m, n)) && primesContains(concat(n, m))
-  def isPrimeFamily = Lists.holdsForFamily(isPrimePair)_
+  def isPrimeFamily(l: List[Long]) = l.holdsForFamily(isPrimePair)
 
   // value is probably prime. much faster
   def isProbablyPrimePair(certainty: Int)(m: Long, n: Long) = {
     BigInt(concat(m, n)).isProbablePrime(certainty) && BigInt(concat(n, m)).isProbablePrime(certainty)
   }
-  def isProbablyPrimeFamily = Lists.holdsForFamily(isProbablyPrimePair(5))_
+  def isProbablyPrimeFamily(l: List[Long]) = l.holdsForFamily(isProbablyPrimePair(5))
 
   // first attempt. slow, using tail recursion. ~80 seconds to find family of 4.
   def findPrimeFamily_Fail1(targetSetSize: Int) = {
@@ -53,7 +52,7 @@ object Problem060 extends Problem with App {
   //  primes.findSet(_.holdsForFamily(isPrimePair))(3)
 
   // second attempt. faster, using streams. ~40 seconds to find a family of 4
-  def findPrimeFamily_Fail2(size: Int, cap: Long = 1000) = primes.takeWhile(_ < cap).combinations(size).find(isPrimeFamily(_))
+  def findPrimeFamily_Fail2(size: Int, cap: Long = 1000) = primes.takeWhile(_ < cap).combinations(size).map(_.toList).find(isPrimeFamily)
   // println(findPrimeFamily(3, 1000))
 
   // third attempt. try to cheat by only using the known family. Does not return.
@@ -73,7 +72,7 @@ object Problem060 extends Problem with App {
         false
   }
 
-  def isPrimeFamilyArray = Lists.holdsForFamily((a: Int, b: Int) => primePairArr(a)(b) == true)_
+  def isPrimeFamilyArray(l: List[Int]) = l.holdsForFamily((a: Int, b: Int) => primePairArr(a)(b) == true)
 
   lazy val results = {
     for {

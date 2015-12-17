@@ -1,4 +1,4 @@
-package common.myMath
+package common.math
 
 class ContinuedFraction(val wholePart: Int, val repeatedBlock: List[Int]) {
     val period = repeatedBlock.length

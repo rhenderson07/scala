@@ -1,4 +1,4 @@
-package common.myMath
+package common.math
 
 import scala.math.BigDecimal.RoundingMode
 import scala.math.BigDecimal.int2bigDecimal

@@ -1,7 +1,6 @@
-
 package problems
 
-import common.Strings
+import common.upgrades.Implicits._
 
 object Problem036 extends Problem with App {
   def number = 36
@@ -10,10 +9,10 @@ object Problem036 extends Problem with App {
 
   lazy val targetUpperBound = 1000000
 
-  def isDoublePalindrome(n: Long): Boolean = Strings.isPalindrome(n.toString) && Strings.isPalindrome(n.toBinaryString)
+  def isDoublePalindrome(n: Long): Boolean = n.toString.isPalindrome && n.toBinaryString.isPalindrome
   lazy val doublePalindromes = Stream.from(0).filter(isDoublePalindrome(_))
 
   println(run)
-  
+
   //doublePalindromes.take(20).map(x=> (x, x.toBinaryString)).foreach(println)
 }

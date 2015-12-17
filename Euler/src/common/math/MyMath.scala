@@ -1,14 +1,16 @@
-package common
+package common.math
 
-import scala.collection.mutable.LongMap
 import scala.math.BigDecimal.RoundingMode
 import scala.annotation.tailrec
+import scala.BigDecimal
+import scala.BigInt
+import scala.collection.immutable.Stream.consWrapper
+import scala.math.BigDecimal.int2bigDecimal
+import scala.math.BigInt.int2bigInt
 
 object MyMath {
-  val primes: Stream[Long] = 2L #:: Stream.from(3, 2).map(_.longValue).filter(!divisibleByAnyPrime(_))
-  def divisibleByAnyPrime(n: Long): Boolean = primes.takeWhile(i => i * i <= n).exists(n % _ == 0)
 
-  def primeDivisors(n: Long) = primes.takeWhile(_ <= n).filter(n % _ == 0)
+  def primeDivisors(n: Long) = Primes.stream.takeWhile(_ <= n).filter(n % _ == 0)
 
   /**
    * First attempt at finding divisors.
@@ -46,7 +48,7 @@ object MyMath {
       }
     }
 
-    rec(n, primes, List(1L))//.sorted
+    rec(n, Primes.stream, List(1L)) //.sorted
   }
 
   /**
@@ -148,9 +150,9 @@ object MyMath {
   /**
    * sum all the digits in a BigInt. This is a common operation in Project Euler
    */
-  def sumOfDigits(n: BigInt): Long = asListOfDigits(n).map(_.longValue).sum
+  def sumOfDigits(n: BigInt): Long = asListOfDigits(n).map(_.toLong).sum
 
-  val squares: Stream[Long] = Stream.from(0).map(x => x.longValue * x)
+  val squares: Stream[Long] = Stream.from(0).map(x => x.toLong * x)
 
   /**
    *  Return the last or current integer square root. Avoids the rounding errors of floating point math.
