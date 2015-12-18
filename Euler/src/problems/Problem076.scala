@@ -15,52 +15,52 @@ object Problem076 extends Problem with App {
   // Solution borrowed from Problem 31. TODO move this to a common library.
   // Runs in 18.3 seconds. Could go faster with memoization
   def summations(n: Int) = {
-    def combinations(remainingAmount: Int, valsToTry: List[Int]): Long = {
-      if (remainingAmount == 0)
-        1
-      else if (valsToTry.isEmpty || remainingAmount < 0)
-        0
-      else
-        combinations(remainingAmount - valsToTry.head, valsToTry) + combinations(remainingAmount, valsToTry.tail)
-    }
-
-    val range = (n - 1 to 1 by -1).toList
-    combinations(n, range)
-  }
-
-  // Second attempt. Caching solution. very fast. extremely ugly. Runs in 0.03 seconds
-  def summations2(n: Int) = {
-    val cache = scala.collection.mutable.Map[(Int, Int), Long]().withDefaultValue(0)
-
-    def rec(remainingAmount: Int, valsToTry: List[Int]): Long = {
-      lazy val recInner = {
-        if (remainingAmount == 0)
-          1
-        else if (valsToTry.isEmpty || remainingAmount < 0)
-          0
-        else
-          rec(remainingAmount - valsToTry.head, valsToTry) + rec(remainingAmount, valsToTry.tail)
-      }
-
-      cache.getOrElseUpdate((remainingAmount, valsToTry.size), recInner)
+    def rec(remaining: Int, valsToTry: List[Int]): Long = {
+      if (remaining == 0) 1
+      else if (valsToTry.isEmpty || remaining < 0) 0
+      else rec(remaining - valsToTry.head, valsToTry) + rec(remaining, valsToTry.tail)
     }
 
     val range = (n - 1 to 1 by -1).toList
     rec(n, range)
   }
 
-  // Caching solution from Euler
-  def sol(n: Long) = {
-    val cache = scala.collection.mutable.Map[(Long, Long), Long]().withDefaultValue(0)
+  // Second attempt. Caching solution. Very fast. Extremely ugly code. Runs in 0.03 seconds
+  def summations2(n: Int) = {
+    val cache = scala.collection.mutable.Map[(Int, Int), Long]().withDefaultValue(0)
 
-    for {
-      i <- 2L to n;
-      k <- (i / 2) to 1 by -1
-    } {
-      cache((i, k)) = 1 + cache((i - k, k)) + cache((i, k + 1))
+    def rec(remaining: Int, valsToTry: List[Int]): Long = {
+
+      def recInner() = {
+        //println(s"Inner: $remaining, ${valsToTry.size}")
+        if (remaining == 0) 1
+        else if (valsToTry.isEmpty || remaining < 0) 0
+        else rec(remaining - valsToTry.head, valsToTry) + rec(remaining, valsToTry.tail)
+      }
+
+      cache.getOrElseUpdate((remaining, valsToTry.size), recInner)
     }
-    cache(n, 1)
+
+    val range = (n - 1 to 1 by -1).toList
+    val result = rec(n, range)
+    
+    println(cache.size)
+    
+    result
   }
 
-  time(summations2)(100)
+  // Caching solution from Euler. Very fast. Run in 0.035 seconds. Not functional.
+  def summations3(n: Long) = {
+    val cache = scala.collection.mutable.Map[(Long, Long), Long]().withDefaultValue(0)
+    for { i <- 2L to n; k <- (i / 2) to 1 by -1 } {
+      cache((i, k)) = 1 + cache((i - k, k)) + cache((i, k + 1))
+    }
+    val result = cache(n, 1)
+    
+    println(cache.size)
+    
+    result
+  }
+
+  time(summations2)(target)
 }

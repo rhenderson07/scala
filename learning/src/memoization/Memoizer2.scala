@@ -25,6 +25,6 @@ object MemomizeTest extends App {
   
   var fac = RecursiveMemomizedFunction(facRec)
 
-  println(fac(5))
-  println(fac(5))
+  println(fac(200))
+  println(fac(200))
 }
