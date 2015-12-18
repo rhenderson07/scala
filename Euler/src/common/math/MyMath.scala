@@ -146,11 +146,13 @@ object MyMath {
    */
   def asListOfDigits(n: BigInt): List[Int] = n.toString.toList.map(_.asDigit)
   def asListOfDigits(n: Int): List[Int] = n.toString.toList.map(_.asDigit)
+  def asListOfDigits(n: BigDecimal): List[Int] = n.toString.toList.filterNot(x => List('.', '-').contains(x)).map(_.asDigit)
 
   /**
    * sum all the digits in a BigInt. This is a common operation in Project Euler
    */
   def sumOfDigits(n: BigInt): Long = asListOfDigits(n).map(_.toLong).sum
+  def sumOfDigits(ints: List[Int]): Long = ints.map(_.toLong).sum
 
   val squares: Stream[Long] = Stream.from(0).map(x => x.toLong * x)
 
