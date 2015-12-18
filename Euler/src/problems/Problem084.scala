@@ -11,12 +11,26 @@ object Problem084 extends Problem with App {
 
   val monopolyCircuit = Seq("GO", "A1", "CC1", "A2", "T1", "R1", "B1", "CH1", "B2", "B3", "JAIL",
     "C1", "U1", "C2", "C3", "R2", "D1", "CC2", "D2", "D3", "FP", "E1", "CH2", "E2", "E3", "R3",
-    "F1", "F2", "U2", "F3", "G2J", "G1", "G2", "CC3", "G3", "R4", "CH3", "H1", "T2", "H2")
+    "F1", "F2", "U2", "F3", "G2J", "G1", "G2", "CC3", "G3", "R4", "CH3", "H1", "T2", "H2");
 
-  
-    
-    //Dice.diceFeq(List(6, 6, 6, 6)).foreach(println)
-    monopolyCircuit.take(50).foreach(println)
+  val communityChestCards = {
+    val TotalCount = 16
+    val special = List("GO", "JAIL")
+    List.fill(TotalCount - special.size)("") :: special
+  }
+
+  val chanceCards = {
+    val TotalCount = 16
+    val special = List("GO", "JAIL", "")
+    List.fill(TotalCount - special.size)("") :: special
+  }
+
+  //Planning:
+  // I think the best way to go about this is to look at each position and calculate for each other pos,
+  // what are the odds of ending up at the target pos, from there.
+
+  //Dice.diceFeq(List(6, 6, 6, 6)).foreach(println)
+  communityChestCards.take(50).foreach(println)
 }
 
 object Dice {
