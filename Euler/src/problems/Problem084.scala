@@ -13,17 +13,36 @@ object Problem084 extends Problem with App {
     "C1", "U1", "C2", "C3", "R2", "D1", "CC2", "D2", "D3", "FP", "E1", "CH2", "E2", "E3", "R3",
     "F1", "F2", "U2", "F3", "G2J", "G1", "G2", "CC3", "G3", "R4", "CH3", "H1", "T2", "H2");
 
+  //  class MonopolySquare(val name:String, val)
+
   val communityChestCards = {
     val TotalCount = 16
     val special = List("GO", "JAIL")
-    List.fill(TotalCount - special.size)("") :: special
+    val filler = List.fill[String](TotalCount - special.size)("")
+    filler ::: special
+  }
+  
+  val chanceCards = {
+    
   }
 
-  val chanceCards = {
-    val TotalCount = 16
-    val special = List("GO", "JAIL", "")
-    List.fill(TotalCount - special.size)("") :: special
-  }
+  // enum for ca
+  //  abstract class Square(val name:String)
+  //  case class Building(val name:String) extends Square;
+  //  case class RailRoad(val name:String) extends Square;
+  //  case class Chance(val name:String) extends Square;
+
+  // enum for ca
+//  abstract class SquareType extends Enumeration {
+//    type SquareType = Value
+//    val BUILDING, CHANCE, COMMUNITY, RAILROAD, UTILITY, GO, JAIL, GOTOJAIL = Value
+//  }
+//
+//  val chanceCards = {
+//    val TotalCount = 16
+//    val special = List("GO", "JAIL", "")
+//    List.fill(TotalCount - special.size)("") :: special
+//  }
 
   //Planning:
   // I think the best way to go about this is to look at each position and calculate for each other pos,
