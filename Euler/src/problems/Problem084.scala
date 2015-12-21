@@ -2,6 +2,7 @@
 package problems
 
 import common.math.MyMath
+import common.upgrades.Implicits._
 
 object Problem084 extends Problem with App {
   def number = 84
@@ -60,7 +61,7 @@ object Problem084 extends Problem with App {
     val outcomeFunct = outcomesForSquare(monopolyCircuit)(rolls) _
     val outcomes = (0 until monopolyCircuit.size).map(outcomeFunct).flatten.toList
 
-    Dice.frequency(outcomes)
+    outcomes.frequencies.sorted
   }
 
   test.foreach(println)
@@ -83,13 +84,5 @@ object Dice {
     rec(dice, List(0)).sorted
   }
 
-  /**
-   * Return a list of frequencies for each element in the list
-   */
-  def frequency[T <% Ordered[T]](l: List[T]) = {
-    val totalCount = l.size
-    l.groupBy(identity).mapValues(_.size * BigDecimal(100) / totalCount).toList.sortBy(_._1)
-  }
-
-  def diceFeq(dice: List[Int]) = frequency(diceOutcomes(dice))
+  def diceFeq(dice: List[Int]) = diceOutcomes(dice).frequencies.sorted
 }

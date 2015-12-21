@@ -54,4 +54,12 @@ class MyLinearSeq[T](target: LinearSeq[T]) {
     // TODO implement
     LinearSeq()
   }
+  
+    /**
+   * Return a list of frequencies for each element in the list. Will not return for infinite sequences.
+   */
+  def frequencies = {
+    val totalCount = target.size
+    target.groupBy(identity).mapValues(_.size * BigDecimal(100) / totalCount).toSeq
+  }
 }
