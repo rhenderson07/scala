@@ -45,20 +45,41 @@ object Problem084 extends Problem with App {
   //    List.fill(TotalCount - special.size)("") :: special
   //  }
 
+  //Sudo:
+  /*
+For each square:
+	get all single roll outcomes
+	for each roll outcome:
+		if new location is on a special square:
+			modify outcome result
+		if roll resulted from doubles:
+			increment doubleCount
+			if doubleCount >= DOUBLE_LIMIT:
+				go to Jail
+			else:
+				repeat process from new square.
+   */
+
   //Planning:
   // I think the best way to go about this is to look at each position and calculate for each other pos,
   // what are the odds of ending up at the target pos, from there.
 
-  // given a square and assuming all squares are normal, what are the possible outcomes and their corresponding probability?
-  def outcomesForSquare(list: List[String])(rolls: List[Int])(index: Int) = {
-    rolls.map(x => list((x + index) % list.size))
+  /**
+   * Given a square and assuming all squares are normal, what are the possible outcomes and their corresponding probability?
+   */
+  def outcomesForSquare(rolls: List[Int], circuit: List[String], index: Int): List[String] = {
+    rolls.map(x => circuit((x + index) % circuit.size))
+  }
+
+  def specialSquareModifier(circuit: List[String], index: Int): List[String] = {
+    List()
   }
 
   // Dice.diceFeq(List(6, 6, 6, 6)).foreach(println)
   // communityChestCards.take(50).foreach(println)
   lazy val test = {
     val rolls = Dice.diceOutcomes(List(6, 6))
-    val outcomeFunct = outcomesForSquare(monopolyCircuit)(rolls) _
+    val outcomeFunct = outcomesForSquare(rolls, monopolyCircuit, _: Int)
     val outcomes = (0 until monopolyCircuit.size).map(outcomeFunct).flatten.toList
 
     outcomes.frequencies.sorted
