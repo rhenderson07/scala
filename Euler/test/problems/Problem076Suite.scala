@@ -10,6 +10,6 @@ import common.upgrades.Implicits._
 class Problem076Suite extends FunSuite {
   
   test("Summation count accurate for input 5") {    
-    assert(Problem076.summations(5) === 6)
+    assert(Problem076.sumCount(5) === 6)
   }
 }
