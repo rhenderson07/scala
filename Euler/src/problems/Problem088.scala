@@ -2,6 +2,7 @@ package problems
 
 import common.math.Primes
 import common.upgrades.Implicits._
+import common.math.MyMath
 import scala.annotation.tailrec
 
 object Problem088 extends Problem with App {
@@ -14,7 +15,7 @@ object Problem088 extends Problem with App {
    * For given value k, returns minimal sum product composed of that many elements
    */
   def minimalSumProduct(k: Int): Int = {
-    -1
+    Stream.from(1).map(i => sumProduct(k)(i)).find(_.nonEmpty).get.get.sum
   }
 
   def isSumProduct(l: List[Int]) = {
@@ -24,19 +25,25 @@ object Problem088 extends Problem with App {
   /**
    * For the given value x, find all sum product sets
    */
-  def sumProductSets(x: Int): List[List[Int]] = {
-    val divisors = common.math.MyMath.findDivisors(x).map(_.toInt)
+  def sumProduct(length: Int)(x: Int): Option[List[Int]] = {
+    // get divisors in reverse order
+    val divisors = MyMath.findDivisors(x).sorted.map(_.toInt)
 
-//    @tailrec
-    def rec(factors: List[Int], currentList: List[Int], remaining: Int): List[List[Int]] = {
-      if (remaining == 0) {
-        List()
-      } else {
-        List()
-      }
-    }
-
-    rec(divisors,List(), x)
+    comb(length, divisors).find(isSumProduct)
   }
 
+  private def combInner[T](n: Int, l: List[T]): List[List[T]] =
+    n match {
+      case 0 => List(List())
+      case _ => for (
+        element <- l;
+        sl <- combInner(n - 1, l.dropWhile(_ != element))
+      ) yield element :: sl
+    }
+
+  def comb[T](n: Int, l: List[T]): List[List[T]] = combInner(n, l.distinct)
+
+  //  MyMath.findDivisors(156).sorted.reverse.combinations(3).foreach(println)
+  //  sumProduct(2)(2).foreach(println)
+  println(minimalSumProduct(6))
 }
