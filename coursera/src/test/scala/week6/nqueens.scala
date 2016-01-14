@@ -11,18 +11,21 @@ object nqueens extends App {
         for {
           queens <- placeQueens(k - 1)
           row <- 0 until n
+          val size = n - 1
           if isSafe(row, queens)
+          if (row <= size / 2 || !isSafe(size - row, queens))
         } yield row :: queens
       }
     }
-    placeQueens(n)
+    //find solutions and sort so low numbers appear in list first
+    placeQueens(n).map(_.reverse)
   }
 
+  /**
+   * Return false if same row exists in list or if new queen is threatened diagonally.
+   * Not possible for same column to exist in list.
+   */
   def isSafe(row: Int, queens: List[Int]): Boolean = {
-    // not possible for same column to exist in list
-    // test if same row exists in list
-    // test if new queen is threatened diagonally
-
     val gameState = queens.zip(Stream.from(1))
     gameState.forall {
       case (r, c) => row != r && math.abs(row - r) != c
@@ -34,13 +37,24 @@ object nqueens extends App {
     val pairs = queens.zipWithIndex.sorted
 
     val rows = {
-      for (p <- pairs)
+      for (p <- queens.zipWithIndex.sorted)
         yield Vector.fill(pairs.length)("* ").updated(p._2, "X ").mkString
 
     }
     "\n" + rows.mkString("\n") + "\n"
   }
 
-  val boardSize = 12
-  queens(boardSize).par.take(3).map(s => s.mkString(",") + "\n" + show(s)).foreach(println)
+  def time[A <: Any, B <: Any](f: (A => B))(param: A): Unit = {
+    val startTime = System.nanoTime();
+    val solution = f(param)
+    val endTime = System.nanoTime();
+    println(s"Solution = $solution.  Elapsed time ${(endTime - startTime) * 1e-9} seconds\n")
+  }
+
+  // testing
+  val boardSize = 10
+  def queenSolutions(n: Int): Int = queens(n).size
+
+  time(queenSolutions)(boardSize)
+  queens(boardSize).take(3).map(s => s.mkString(",") + "\n" + show(s)).foreach(println)
 }
