@@ -45,44 +45,7 @@ object Problem088 extends Problem with App {
     val curMaxFactor = 1;
     val j = 0;
 
-    def factorization2(max: Int) = {
-      for {
-        // all factorizations of length 2
-        i <- 2 to max / 2
-        j <- i to max / i
-      } yield (i, j)
-    }
-
-    def factorization3(max: Int) = {
-      for {
-        // all factorizations of length 3
-        i1 <- 2 to max / 2
-        i2 <- i1 to max / i1
-        i3 <- i2 to max / i1 / i2
-      } yield (i1, i2, i3)
-    }
-
-    /**
-     * Return factorizations with products less than or equal to the max value
-     */
-    val getFactorizations = (maxVal: Int) => {
-      def findFactorizations(terms: Int): Seq[List[Int]] = {
-        if (terms == 1) (2 to maxVal).map(List(_)).toList
-        else {
-          for {
-            factors <- findFactorizations(terms - 1)
-            cand <- factors.head to (maxVal / factors.product)
-            if (cand >= factors.head)
-          } yield cand :: factors
-        }
-      }
-
-      // find all factorizations
-      val maxTerms = (math.log(maxVal) / math.log(2)).toInt
-      (2 to maxTerms).flatMap(findFactorizations(_).reverse)
-    }
-
-    val cachingGetFactorizations = (maxVal: Int) => {
+    def getFactorizations(maxVal: Int) = {
       // cache factorizations for each number of terms
       val termsCache = scala.collection.mutable.Map[Int, Seq[List[Int]]]()
 
