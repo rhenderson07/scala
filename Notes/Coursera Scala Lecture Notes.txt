@@ -253,3 +253,66 @@ Lecture 1.7 Tail Recursion
 
 
 
+	
+	
+	
+	
+	
+
+	
+	
+	
+Lecture 6.2 Combinatorial Search and For-Expressions:
+	Handling Nested Sequences:
+		We can extend the usage of higher order functions on sequences to many calulations which are usually expressed using nested loops.
+		
+		ex) Given a positive integer n, find all pairs of positive integers i and j, with 1 <= j < i < n such that i + j is prime:
+			for example, if n = 7, the sought pairs are
+				(2,1) -> 3
+				(3,2) -> 5
+				(4,1) -> 5
+				(4,3) -> 7
+				(5,2) -> 7
+				(6,1) -> 7
+				(6,5) -> 11
+				
+		Algorithm:
+			Natural way to do this:
+				-Generate the squenece of all pairs of integers (i,j) such that 1 <= j < i < n
+				-filter the pairs for which i + j is prime.
+				
+			One natural way to generate the sequence of pairs is to:
+				Geneerate all the integers i between 1 and n (exclusive)
+				for each integer i, generate the list of pairs (i,1), ..., (i,i-1)
+				
+			this can be achieved by combining 'until' and 'map':
+				(1 until n).map(i=>(1 until i).map(j=>(i,j)))
+				
+				* this return a list of lists, which must then be flattened. Returning a flatMap also works
+					((1 until n).map(i=>(1 until i).map(j=>(i,j)))).flatten
+					
+					or
+					
+					(1 until n).flatMap(i=>(1 until i).map(j=>(i,j)))
+			
+			After generating results, filter for only pairs with a prime sum
+				
+				(1 until n).flatMap(i=>(1 until i).map(j=>(i,j))).filter(isPrime(_._1 + _._2))
+				
+			This can all be replaced with a 'for-expression'
+				for {
+					i <- 1 until n
+					j <- 1 until i
+					if isPrime(i + j)
+				} yeild (i,j)
+				
+Lecture 6.3 Combinatorial Search Example:
+	Working with Sets and Maps
+	
+	Sets:
+		unordered
+		no duplicates
+		fundamental operation is 'contains'
+		
+	N-Queens problem
+		
