@@ -1,10 +1,6 @@
 package problems
 
-import common.math.Primes
-import common.upgrades.Implicits._
 import common.math.MyMath
-import scala.annotation.tailrec
-import common.RecursiveMemomizedFunction
 
 object Problem088 extends Problem with App {
   def number = 88
@@ -45,6 +41,9 @@ object Problem088 extends Problem with App {
     val curMaxFactor = 1;
     val j = 0;
 
+    /**
+     * Return all factorization with a product less than or equal to the specified max value.
+     */
     def getFactorizations(maxVal: Int) = {
       // cache factorizations for each number of terms
       val termsCache = scala.collection.mutable.Map[Int, Seq[List[Int]]]()
@@ -69,8 +68,30 @@ object Problem088 extends Problem with App {
       (2 to maxTerms).flatMap(getFactorizations(_).reverse)
     }
 
+    def isSumProduct(l: List[Int]) = {
+      l.sum == l.product
+    }
+
+    def getMinSumProducts(maxK: Int): List[Int] = {
+      val maxNumber = 2 * maxK
+      val factorizations = getFactorizations(maxNumber)
+      
+      
+
+      // find min prodSum for len 2
+      def findMin(len: Int) = factorizations.find(isSumProduct(_)).get.sum
+      
+      (2 to maxK).map(findMin).toList
+
+      //      (2 to maxK).map(factorizations.find(isSumProduct).get).sum
+      //      factorizations.withFilter(_.size == 2)
+      //
+      //      -1L
+    }
+
     println("starting")
-    getFactorizations(50000).withFilter(_.size >= 12).foreach(println)
+    //    getFactorizations(50000).withFilter(_.size >= 12).foreach(println)
+    println(getMinSumProducts(4))
     println("done")
   }
 
