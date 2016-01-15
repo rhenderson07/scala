@@ -4,6 +4,7 @@ import common.math.Primes
 import common.upgrades.Implicits._
 import common.math.MyMath
 import scala.annotation.tailrec
+import common.RecursiveMemomizedFunction
 
 object Problem088 extends Problem with App {
   def number = 88
@@ -61,30 +62,52 @@ object Problem088 extends Problem with App {
       } yield (i1, i2, i3)
     }
 
-    def factorization4(max: Int) = {
-      for {
-        // all factorizations of length 3
-        i1 <- 2 to max / 2
-        i2 <- i1 to max / i1
-        i3 <- i2 to max / i1 / i2
-        i4 <- i3 to max / i1 / i2 / i3
-      } yield (i1, i2, i3, i4)
+    /**
+     * Return factorizations with products less than or equal to the max value
+     */
+    val getFactorizations = (maxVal: Int) => {
+      def findFactorizations(terms: Int): Seq[List[Int]] = {
+        if (terms == 1) (2 to maxVal).map(List(_)).toList
+        else {
+          for {
+            factors <- findFactorizations(terms - 1)
+            cand <- factors.head to (maxVal / factors.product)
+            if (cand >= factors.head)
+          } yield cand :: factors
+        }
+      }
+
+      // find all factorizations
+      val maxTerms = (math.log(maxVal) / math.log(2)).toInt
+      (2 to maxTerms).flatMap(findFactorizations(_).reverse)
     }
 
-    def factorization14(max: Int) = {
-      for {
-        // all factorizations of length 3
-        i1 <- 2 to max / 2
-        i2 <- i1 to max / i1
-        i3 <- i2 to max / i1 / i2
-        i4 <- i3 to max / i1 / i2 / i3
-      } yield (i1, i2, i3, i4)
+    val cachingGetFactorizations = (maxVal: Int) => {
+      // cache factorizations for each number of terms
+      val termsCache = scala.collection.mutable.Map[Int, Seq[List[Int]]]()
+
+      def getFactorizations(terms: Int): Seq[List[Int]] = {
+        termsCache.getOrElseUpdate(terms, calculate(terms))
+      }
+
+      def calculate(terms: Int) = {
+        if (terms == 1) (2 to maxVal).map(List(_)).toList
+        else {
+          for {
+            factors <- getFactorizations(terms - 1)
+            cand <- factors.head to (maxVal / factors.product)
+            if (cand >= factors.head)
+          } yield cand :: factors
+        }
+      }
+
+      // find all factorizations
+      val maxTerms = (math.log(maxVal) / math.log(2)).toInt
+      (2 to maxTerms).flatMap(getFactorizations(_).reverse)
     }
 
     println("starting")
-    factorization2(24000)
-    factorization3(24000)
-    factorization4(24000)
+    getFactorizations(50000).withFilter(_.size >= 12).foreach(println)
     println("done")
   }
 
@@ -124,5 +147,6 @@ object Problem088 extends Problem with App {
     //  MyMath.findDivisors(156).sorted.reverse.combinations(3).foreach(println)
     //  sumProduct(2)(2).foreach(println)
     //println(minimalSumProduct(6))
+    println
   }
 }
