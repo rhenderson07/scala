@@ -5,7 +5,9 @@ import common.math.MyMath
 object Problem088 extends Problem with App {
   def number = 88
   def description = "What is the sum of all the minimal product-sum numbers for 2 =< k =< 12000?"
-  def run = -1L
+  def run = getMinSumProducts(target).values.toSet.sum
+
+  val target = 12000
 
   /*
    * Math insight to help solve problem:
@@ -26,111 +28,64 @@ object Problem088 extends Problem with App {
    *  With these two insight we should be able to find the solution for the problem.
    */
 
-  // second attempt. using insights
-  {
-    val maxK = 12000
+  /**
+   * Return all factorization with a product less than or equal to the specified max value.
+   */
+  def getFactorizations(maxVal: Int) = {
+    // cache factorizations for each number of terms
+    val termsCache = scala.collection.mutable.Map[Int, Seq[List[Int]]]()
+
+    def retrieveFactorizations(terms: Int): Seq[List[Int]] = {
+      termsCache.getOrElseUpdate(terms, calculate(terms))
+    }
+
+    def calculate(terms: Int) = {
+      if (terms == 1) (2 to maxVal).map(List(_)).toList
+      else {
+        for {
+          factors <- retrieveFactorizations(terms - 1)
+          cand <- factors.head to (maxVal / factors.product)
+          if (cand >= factors.head)
+        } yield cand :: factors
+      }
+    }
+
+    // find all factorizations
+    val maxTerms = (math.log(maxVal) / math.log(2)).toInt
+    (2 to maxTerms).flatMap(retrieveFactorizations(_).reverse)
+  }
+
+  def isSumProduct(l: List[Int]) = {
+    l.sum == l.product
+  }
+
+  /**
+   * Calculate to total number of factors that would result from converting this list into a sumProduct list.
+   */
+  def sumProductFactorCount(factors: List[Int]): Int = factors.size + factors.product - factors.sum
+
+  /**
+   * Return mapping of min sum products for each k between 2 and maxK
+   */
+  def getMinSumProducts(maxK: Int) = {
     val maxNumber = 2 * maxK
 
-    val numFactors = (Math.log(maxNumber) / Math.log(2)).intValue
-    val factors = Array.fill(numFactors)(0)
+    // group factorizations by k
+    lazy val factorizations = getFactorizations(maxNumber)
+    lazy val kGroups = factorizations.filter(x => x.sum <= x.product).groupBy(sumProductFactorCount)
 
-    val k = (0 to maxK).map(x => x * 2).toArray;
-    k(1) = 0;
+    // for each group, find min sumProduct
+    lazy val minSumProds = for {
+      group <- kGroups
+      val (k, factorLists) = group
+      val minProdSum = factorLists.map(_.product).min
+      if (k <= maxK)
+    } yield (k, minProdSum)
 
-    factors(0) = 1;
-    val curMaxFactor = 1;
-    val j = 0;
-
-    /**
-     * Return all factorization with a product less than or equal to the specified max value.
-     */
-    def getFactorizations(maxVal: Int) = {
-      // cache factorizations for each number of terms
-      val termsCache = scala.collection.mutable.Map[Int, Seq[List[Int]]]()
-
-      def getFactorizations(terms: Int): Seq[List[Int]] = {
-        termsCache.getOrElseUpdate(terms, calculate(terms))
-      }
-
-      def calculate(terms: Int) = {
-        if (terms == 1) (2 to maxVal).map(List(_)).toList
-        else {
-          for {
-            factors <- getFactorizations(terms - 1)
-            cand <- factors.head to (maxVal / factors.product)
-            if (cand >= factors.head)
-          } yield cand :: factors
-        }
-      }
-
-      // find all factorizations
-      val maxTerms = (math.log(maxVal) / math.log(2)).toInt
-      (2 to maxTerms).flatMap(getFactorizations(_).reverse)
-    }
-
-    def isSumProduct(l: List[Int]) = {
-      l.sum == l.product
-    }
-
-    def getMinSumProducts(maxK: Int): List[Int] = {
-      val maxNumber = 2 * maxK
-      val factorizations = getFactorizations(maxNumber)
-      
-      
-
-      // find min prodSum for len 2
-      def findMin(len: Int) = factorizations.find(isSumProduct(_)).get.sum
-      
-      (2 to maxK).map(findMin).toList
-
-      //      (2 to maxK).map(factorizations.find(isSumProduct).get).sum
-      //      factorizations.withFilter(_.size == 2)
-      //
-      //      -1L
-    }
-
-    println("starting")
-    //    getFactorizations(50000).withFilter(_.size >= 12).foreach(println)
-    println(getMinSumProducts(4))
-    println("done")
+    minSumProds.toMap
   }
 
-  //first attempt. Very clunky
-  {
-    /**
-     * For given value k, returns minimal sum product composed of that many elements
-     */
-    def minimalSumProduct(k: Int): Int = {
-      Stream.from(1).map(i => sumProduct(k)(i)).find(_.nonEmpty).get.get.sum
-    }
+  def minProductSum(maxK: Int) = getMinSumProducts(maxK).values.toSet.sum
 
-    def isSumProduct(l: List[Int]) = {
-      l.sum == l.product
-    }
-
-    /**
-     * For the given value x, find all sum product sets
-     */
-    def sumProduct(length: Int)(x: Int): Option[List[Int]] = {
-      // get divisors in reverse order
-      val divisors = MyMath.findDivisors(x).sorted.map(_.toInt)
-      comb(length, divisors).find(isSumProduct)
-    }
-
-    def combInner[T](n: Int, l: List[T]): List[List[T]] =
-      n match {
-        case 0 => List(List())
-        case _ => for (
-          element <- l;
-          sl <- combInner(n - 1, l.dropWhile(_ != element))
-        ) yield element :: sl
-      }
-
-    def comb[T](n: Int, l: List[T]): List[List[T]] = combInner(n, l.distinct)
-
-    //  MyMath.findDivisors(156).sorted.reverse.combinations(3).foreach(println)
-    //  sumProduct(2)(2).foreach(println)
-    //println(minimalSumProduct(6))
-    println
-  }
+  time(minProductSum)(target)
 }
