@@ -51,9 +51,6 @@ object Problem088 extends Problem with App {
     // find all factorizations
     lazy val maxTerms = (math.log(maxVal) / math.log(2)).toInt
     (2 to maxTerms).flatMap(retrieveFactorizations(_).reverse)
-
-    // tried to find all factorizations using stream instead of log. Time increased by 40%
-    // Stream.from(2).map(retrieveFactorizations(_).reverse).takeWhile(_.nonEmpty).flatten
   }
 
   /**
