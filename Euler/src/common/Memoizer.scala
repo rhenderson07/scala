@@ -1,4 +1,4 @@
-package memoization
+package common
 
 /**
  * This is more complex memoizer that is able to work with recursive functions.
@@ -15,4 +15,10 @@ object RecursiveMemomizedFunction {
     def f(n: T): R = fRec(n, n => f(n))
     Memoizer(f)
   }
+
+  //unfinished attempt to allow memoization with multiple parameters 
+  //  def apply[A, T, R](fRec: (A, T, (A, T) => R) => R): (A, T => R) = {
+  //    def f(a: A, n: T): R = fRec(a, n, (a, n) => f(a, n))
+  //    Memoizer(f)
+  //  }
 }

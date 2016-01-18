@@ -20,10 +20,11 @@ object RecursiveMemomizedFunction {
 object MemomizeTest extends App {
   def facRec(n: BigInt, f: BigInt => BigInt): BigInt = {
     println("facRec " + n)
-    if (n == 0) 1 else n * f(n - 1)
+    if (n == 0) 1 
+    else n * f(n - 1)
   }
   
-  var fac = RecursiveMemomizedFunction(facRec)
+  val fac = RecursiveMemomizedFunction(facRec)
 
   println(fac(200))
   println(fac(200))
